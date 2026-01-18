@@ -1,0 +1,57 @@
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const twilio = require('twilio');
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Retell call-ended webhook
+app.post('/webhooks/retell/call-ended', async (req, res) => {
+  const summary = req.body?.call_summary || 'No summary provided';
+
+  try {
+    await client.messages.create({
+      body: `📞 After-hours call summary:\n\n${summary}\n\nReply YES / CALL / TOMORROW`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: process.env.OWNER_PHONE_NUMBER
+    });
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+// Twilio inbound SMS webhook
+app.post('/webhooks/twilio/sms', async (req, res) => {
+  const body = req.body.Body?.trim().toUpperCase();
+
+  if (body === 'YES') {
+    await client.messages.create({
+      body: '🚨 Dispatching plumber now.',
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: process.env.ON_CALL_PLUMBER_NUMBER
+    });
+  }
+
+  res.send('<Response></Response>');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Dispatch loop running on port ${PORT}`);
+});
+

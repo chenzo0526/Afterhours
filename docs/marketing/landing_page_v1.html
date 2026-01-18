@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Afterhours AI - After-hours Call Coverage</title>
+    <meta
+      name="description"
+      content="Afterhours AI answers every after-hours call, captures details, and only escalates true emergencies."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #101828;
+        --muted: #475467;
+        --border: #e4e7ec;
+        --accent: #1f6feb;
+        --accent-dark: #1559c0;
+        --shadow: 0 16px 40px rgba(16, 24, 40, 0.08);
+        --radius: 16px;
+        --max-width: 980px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(92%, var(--max-width));
+        margin: 0 auto;
+      }
+
+      header,
+      section {
+        padding: 64px 0;
+      }
+
+      .hero {
+        padding-top: 88px;
+        padding-bottom: 72px;
+        display: grid;
+        gap: 32px;
+      }
+
+      .hero-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 32px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 12px;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.15;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: var(--muted);
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: #fff;
+        padding: 14px 24px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background 0.2s ease, transform 0.2s ease;
+        border: none;
+      }
+
+      .cta-button:hover {
+        background: var(--accent-dark);
+        transform: translateY(-1px);
+      }
+
+      .list {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+
+      .steps {
+        display: grid;
+        gap: 20px;
+      }
+
+      .step {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 20px;
+        border: 1px solid var(--border);
+      }
+
+      .comparison {
+        overflow-x: auto;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: var(--card);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 640px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      th {
+        color: var(--text);
+        font-weight: 600;
+        background: #f9fafb;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .columns {
+        display: grid;
+        gap: 20px;
+      }
+
+      .column-card {
+        background: var(--card);
+        padding: 24px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+
+      .final-cta {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 32px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        text-align: center;
+      }
+
+      footer {
+        padding: 24px 0 96px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .mobile-sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 12px 16px;
+        background: rgba(246, 247, 251, 0.96);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid var(--border);
+        display: none;
+        z-index: 10;
+      }
+
+      .mobile-sticky .cta-button {
+        width: 100%;
+      }
+
+      @media (min-width: 900px) {
+        .hero {
+          grid-template-columns: 1.2fr 0.8fr;
+          align-items: center;
+        }
+
+        .steps {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .columns {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer-row {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+
+      @media (max-width: 768px) {
+        header,
+        section {
+          padding: 48px 0;
+        }
+
+        .hero {
+          padding-top: 72px;
+        }
+
+        footer {
+          padding-bottom: 120px;
+        }
+
+        .mobile-sticky {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero container">
+      <div>
+        <h1>Stop losing after-hours emergency calls.</h1>
+        <p>
+          Afterhours AI answers every after-hours call, takes the details, and
+          only wakes you for real emergencies.
+        </p>
+        <a class="cta-button" href="#final-cta">Forward Your Calls Tonight</a>
+      </div>
+      <div class="hero-card">
+        <h3>Calm coverage after 5pm</h3>
+        <p>
+          Your callers get a real answer, your team gets only the calls that
+          matter, and no emergency slips through.
+        </p>
+        <ul class="list">
+          <li>Capture name, issue, and location every time</li>
+          <li>Escalate only true emergencies</li>
+          <li>Send a clean summary by text and email</li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="container">
+      <h2>Pain → Cost of Inaction</h2>
+      <ul class="list">
+        <li>70–85% of callers hang up if they hit voicemail.</li>
+        <li>Most small businesses answer only ~38% of calls live.</li>
+        <li>One emergency call is often $250–$1,000+.</li>
+      </ul>
+    </section>
+
+    <section class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Forward after-hours calls</h3>
+          <p>Route calls to Afterhours AI when your team signs off.</p>
+        </div>
+        <div class="step">
+          <h3>We take the details</h3>
+          <p>Callers describe the issue, and we capture the essentials.</p>
+        </div>
+        <div class="step">
+          <h3>Only true emergencies wake you</h3>
+          <p>Non-urgent calls are logged and sent as a summary.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <h2>Voicemail vs Call Center vs Afterhours AI</h2>
+      <div class="comparison">
+        <table>
+          <thead>
+            <tr>
+              <th>Coverage</th>
+              <th>Voicemail</th>
+              <th>Call Center</th>
+              <th>Afterhours AI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Answer every call</td>
+              <td>No</td>
+              <td>Usually</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Captures clear details</td>
+              <td>Low</td>
+              <td>Mixed</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>Only escalates emergencies</td>
+              <td>No</td>
+              <td>Depends</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Feels premium to callers</td>
+              <td>No</td>
+              <td>Sometimes</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="container">
+      <h2>Who It’s For / Not For</h2>
+      <div class="columns">
+        <div class="column-card">
+          <h3>Who it’s for</h3>
+          <ul class="list">
+            <li>Owner-operators handling after-hours calls</li>
+            <li>Teams that miss calls once the day ends</li>
+            <li>Service pros who want calm, reliable coverage</li>
+          </ul>
+        </div>
+        <div class="column-card">
+          <h3>Who it’s not for</h3>
+          <ul class="list">
+            <li>Businesses that already staff 24/7 live coverage</li>
+            <li>Anyone who wants every call to ring the whole team</li>
+            <li>Shops that do not take after-hours emergencies</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div id="final-cta" class="final-cta">
+        <h2>Protect your nights and your revenue.</h2>
+        <p>
+          Let Afterhours AI handle every after-hours call, then deliver only the
+          ones that matter.
+        </p>
+        <a class="cta-button" href="#final-cta">Forward Your Calls Tonight</a>
+      </div>
+    </section>
+
+    <footer class="container">
+      <div class="footer-row">
+        <span>Built for plumbing first. HVAC &amp; electrical next.</span>
+        <span>US-based support.</span>
+      </div>
+    </footer>
+
+    <div class="mobile-sticky">
+      <a class="cta-button" href="#final-cta">Forward Your Calls Tonight</a>
+    </div>
+  </body>
+</html>

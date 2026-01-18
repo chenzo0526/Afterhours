@@ -1,0 +1,23 @@
+{
+  "safe_mode": true,
+  "test_email": "test@afterhours.com",
+  "google_sheets": {
+    "enabled": false,
+    "credentials_file": "credentials.json",
+    "spreadsheet_id": "",
+    "worksheet_name": "Leads"
+  },
+  "segmentation": {
+    "enabled": true,
+    "categories": ["industry", "size", "location_state"]
+  },
+  "ranking": {
+    "enabled": true,
+    "decision_maker_threshold": 0.6,
+    "min_score": 0.3
+  },
+  "queue": {
+    "auto_add": false
+  }
+}
+

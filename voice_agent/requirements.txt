@@ -1,0 +1,13 @@
+# Voice Agent MVP Dependencies
+
+# Core (minimal for MVP)
+# No external dependencies required for basic functionality
+
+# Optional (for production):
+# openai>=1.0.0  # For GPT-4 integration
+# twilio>=8.0.0  # For Twilio integration
+# requests>=2.31.0  # For API calls
+
+# Testing
+pytest>=7.4.0  # For running tests
+pytest-asyncio>=0.21.0  # For async tests

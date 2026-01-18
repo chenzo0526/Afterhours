@@ -1,0 +1,495 @@
+{
+  "baseId": "appMJsHP71wkLODeW",
+  "baseName": "Afterhours — Ops & Dispatch",
+  "tables": [
+    {
+      "name": "Businesses",
+      "id": "tblQj1iCoHrTkqoXs",
+      "fields": [
+        {
+          "name": "Business Name",
+          "id": "fldDGjgICRUismisU",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Trade",
+          "id": "fldjG0IuIRp8H9Gwj",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selJPMdQhPglF2lC9",
+                "name": "Plumbing",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selNE7EwNLDOHYcr0",
+                "name": "HVAC",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selxqcGZ03eoR9smN",
+                "name": "Electrical",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selwVvaKcG5byev35",
+                "name": "Other",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "City",
+          "id": "fldNZvIXdqXiCMuad",
+          "type": "singleLineText"
+        },
+        {
+          "name": "State",
+          "id": "fldhafeSxFYkEBy4T",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Timezone",
+          "id": "fldSV8gxaPe8iFPVo",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selEy2DKC8pQDyrH1",
+                "name": "America/Los_Angeles",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selI3uBhuYolzK3WG",
+                "name": "America/Chicago",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selDekjIuFu0lH5Oa",
+                "name": "America/New_York",
+                "color": "grayLight2"
+              },
+              {
+                "id": "sel61M7C5cxdsZG8C",
+                "name": "America/Denver",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Afterhours Active",
+          "id": "fld5G2ILa39wsffkp",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Primary Phone",
+          "id": "fldRHGhJ9Zko12KH2",
+          "type": "phoneNumber"
+        },
+        {
+          "name": "Emergency Keywords",
+          "id": "fldEFl2NP6b3lxfeE",
+          "type": "multilineText"
+        },
+        {
+          "name": "Notes",
+          "id": "fldiMi5rxb8zxByfe",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "On-Call Roster",
+      "id": "tblstcfqkQYUst8S8",
+      "fields": [
+        {
+          "name": "Business",
+          "id": "fldOt68sMLEYc6YjH",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblQj1iCoHrTkqoXs",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldG2gx93nDfLf3mn"
+          }
+        },
+        {
+          "name": "Name",
+          "id": "fldiFaDaxbBWEc5A2",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Role",
+          "id": "fldRSYCspLjUnrGyg",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selaLQ1VAnD9dREiU",
+                "name": "Owner",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selumdkzMCFoOcgpR",
+                "name": "Tech",
+                "color": "grayLight2"
+              },
+              {
+                "id": "seldNx9xpLR2zAm5g",
+                "name": "Dispatcher",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Phone",
+          "id": "fldaMlxFnY2AT8qPO",
+          "type": "phoneNumber"
+        },
+        {
+          "name": "Priority",
+          "id": "fld8v7hzgjIDvjFIy",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Backup Contact",
+          "id": "fld4BbiZActRLQYR5",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Active",
+          "id": "fldcvNuHtiK4mYmp3",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Notes",
+          "id": "fldbeydHuO7uYR96m",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "Calls",
+      "id": "tblXJiS9Czxi3MEkF",
+      "fields": [
+        {
+          "name": "Call ID",
+          "id": "fldAqkRcBX5188hAS",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Business",
+          "id": "fldwspujixwgpnwY3",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblQj1iCoHrTkqoXs",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldVXrjYDNxOrNmZC"
+          }
+        },
+        {
+          "name": "Call Timestamp",
+          "id": "fldPVeA8B59Nou8aZ",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "local",
+              "format": "l"
+            },
+            "timeFormat": {
+              "name": "12hour",
+              "format": "h:mma"
+            },
+            "timeZone": "client"
+          }
+        },
+        {
+          "name": "Caller Phone",
+          "id": "fld8zbJSarLSuWBg9",
+          "type": "phoneNumber"
+        },
+        {
+          "name": "City",
+          "id": "fld02g5w4NjrkX7qR",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Emergency Level",
+          "id": "fldDa1260gRS8yFCq",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "seluFQSZRlzpwNNa6",
+                "name": "Emergency",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selnIELvlU1UHh6iW",
+                "name": "Non-Emergency",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selOLTtgNxn0vKsQS",
+                "name": "Unknown",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Issue Summary",
+          "id": "fldlIZ52hxh4AJHBQ",
+          "type": "multilineText"
+        },
+        {
+          "name": "Agent Confidence",
+          "id": "fldO6vYv3nEnNrr3K",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Transcript",
+          "id": "fldEhHiem1XKb1pUT",
+          "type": "multilineText"
+        },
+        {
+          "name": "Dispatch Required",
+          "id": "fld09zKG6o64qd8aP",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Status",
+          "id": "flduszFX0xZPPlytZ",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selPPFyXQ0sNuEX5r",
+                "name": "New",
+                "color": "grayLight2"
+              },
+              {
+                "id": "seltIEgwatbg6IiFw",
+                "name": "Dispatched",
+                "color": "grayLight2"
+              },
+              {
+                "id": "sel2MLvbpAEko9Z6G",
+                "name": "Failed",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selgGpNxKdIkBRTli",
+                "name": "Resolved",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dispatch Events",
+      "id": "tbldRhOOJ9FzzpVzO",
+      "fields": [
+        {
+          "name": "Call",
+          "id": "fld68llz8e9euLyjs",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblXJiS9Czxi3MEkF",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldMASPMRdSsB0A86"
+          }
+        },
+        {
+          "name": "Contact",
+          "id": "fldcwx2ZCbe5bZAGI",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblstcfqkQYUst8S8",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldjIQd8Hn1gN6Wlo"
+          }
+        },
+        {
+          "name": "Method",
+          "id": "fldxG9TpmqkAphuXO",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selkXaFpfDLQLrCQj",
+                "name": "SMS",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selAfNSUzP7FPxtO3",
+                "name": "Call",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selIHnbSW9H8tGOu9",
+                "name": "Both",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Sent At",
+          "id": "fldA4J2EnMuOopzPs",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "local",
+              "format": "l"
+            },
+            "timeFormat": {
+              "name": "12hour",
+              "format": "h:mma"
+            },
+            "timeZone": "client"
+          }
+        },
+        {
+          "name": "Delivery Status",
+          "id": "fldVSCPo1mhrbVJyP",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selNaCwetD2jm6AaM",
+                "name": "Sent",
+                "color": "grayLight2"
+              },
+              {
+                "id": "sellBexucdtXBXha1",
+                "name": "Failed",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selvDcLJC9W3rVdBQ",
+                "name": "Unknown",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Acknowledged",
+          "id": "fldRw10D5ej1r5omb",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Notes",
+          "id": "fldVv9wgek60yfgTP",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "Issues / Bugs",
+      "id": "tbl6J3Ermhqd2aq1Y",
+      "fields": [
+        {
+          "name": "Related Call",
+          "id": "fldtTYPMj6wZJOSOO",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblXJiS9Czxi3MEkF",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldAxI8EbvQgf913q"
+          }
+        },
+        {
+          "name": "Severity",
+          "id": "fldY93LBAyta64Kfd",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "sel6D0OZyBNkuSFWw",
+                "name": "Low",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selHgeJ0ywUhRmAco",
+                "name": "Medium",
+                "color": "grayLight2"
+              },
+              {
+                "id": "sell2rj694ggnwtnG",
+                "name": "High",
+                "color": "grayLight2"
+              },
+              {
+                "id": "sel1zPE9CSvuyylxw",
+                "name": "Critical",
+                "color": "grayLight2"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Description",
+          "id": "fldcZyBD8jNkz7nYQ",
+          "type": "multilineText"
+        },
+        {
+          "name": "Root Cause",
+          "id": "fld5wYxVDQU767tvG",
+          "type": "multilineText"
+        },
+        {
+          "name": "Fixed",
+          "id": "fldekpPjbIaIu0H2H",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Fix Notes",
+          "id": "fldlEIJMs0JSh7K3N",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ]
+}

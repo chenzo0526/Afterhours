@@ -1,0 +1,92 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import path from 'path';
+import { promises as fs } from 'fs';
+
+const leadSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  businessName: z.string().min(1, 'Business name is required'),
+  phone: z.string().min(1, 'Phone is required'),
+  email: z.string().email('Invalid email address'),
+  trade: z.string().min(1, 'Trade is required'),
+  notes: z.string().optional(),
+  status: z.string().optional(),
+});
+
+type LeadInput = z.infer<typeof leadSchema>;
+type StoredLead = LeadInput & { submittedAt: string };
+
+async function parseRequestBody(request: NextRequest) {
+  const contentType = request.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    return request.json();
+  }
+
+  const formData = await request.formData();
+  const data: Record<string, string> = {};
+  for (const [key, value] of formData.entries()) {
+    if (typeof value === 'string') {
+      data[key] = value;
+    }
+  }
+  return data;
+}
+
+async function saveLead(data: LeadInput) {
+  const dataDir = path.join(process.cwd(), 'data');
+  const dataFile = path.join(dataDir, 'leads.json');
+
+  await fs.mkdir(dataDir, { recursive: true });
+
+  let existing: StoredLead[] = [];
+  try {
+    const fileContents = await fs.readFile(dataFile, 'utf-8');
+    existing = JSON.parse(fileContents) as StoredLead[];
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      throw error;
+    }
+  }
+
+  existing.push({
+    ...data,
+    status: data.status || 'unknown',
+    submittedAt: new Date().toISOString(),
+  });
+
+  await fs.writeFile(dataFile, JSON.stringify(existing, null, 2), 'utf-8');
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await parseRequestBody(request);
+    const validationResult = leadSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          errors: validationResult.error.errors.map((error) => ({
+            field: error.path[0],
+            message: error.message,
+          })),
+        },
+        { status: 400 }
+      );
+    }
+
+    await saveLead({ ...validationResult.data });
+
+    return NextResponse.redirect(new URL('/thank-you', request.url), 303);
+  } catch (error) {
+    console.error('[Lead API] Error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Internal server error',
+      },
+      { status: 500 }
+    );
+  }
+}

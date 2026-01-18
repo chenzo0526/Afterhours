@@ -1,0 +1,20 @@
+{
+  "name": "afterhours-lead-engine",
+  "version": "1.0.0",
+  "description": "Lead generation and enrichment tools for Afterhours",
+  "main": "generate_plumbing_leads.js",
+  "scripts": {
+    "generate": "node generate_plumbing_leads.js",
+    "enrich": "node enrich_emails.js",
+    "full": "node generate_plumbing_leads.js && node enrich_emails.js"
+  },
+  "keywords": ["leads", "plumbing", "enrichment"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "csv-writer": "^1.6.0",
+    "csv-parse": "^5.5.0"
+  }
+}
