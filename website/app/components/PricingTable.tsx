@@ -6,11 +6,11 @@ const tiers = [
     description: 'Best for solo operators',
     price: '$99',
     features: [
-      'After-hours + overflow call intake',
-      'SMS + email call summaries',
+      'Late-night call answering',
+      'SMS + email summaries',
       'Spam filtering',
       'Basic urgency tagging',
-      'Business hours & after-hours rules',
+      'Business hours rules',
       'Call recording',
       'Email support',
     ],
@@ -21,13 +21,11 @@ const tiers = [
     price: '$249',
     features: [
       'Higher monthly call volume',
-      'Advanced call summaries (job type, urgency, callback window)',
-      'Multi-contact notification rules',
-      'Custom after-hours notification rules',
+      'Advanced summaries (job type, urgency, callback window)',
+      'Multi-contact notifications',
+      'Custom notification rules',
+      'Call recording',
       'Priority support',
-      'Call history dashboard',
-      'Missed-call summary workflows',
-      'Optional calendar booking link in SMS',
     ],
   },
   {
@@ -36,16 +34,10 @@ const tiers = [
     price: 'Custom',
     features: [
       'Unlimited or pooled call volume',
-      'Multi-location notification rules',
-      'CRM integrations (ServiceTitan, Jobber, Housecall Pro, HubSpot, etc.)',
-      'Calendar integrations (Google / Outlook)',
-      'Custom intake flows per location',
-      'Custom workflows',
-      'Advanced notification rules',
-      'Webhooks + API access',
-      'Analytics & reporting',
-      'Service level reporting',
-      'White-label or co-branded voice',
+      'Multi-location setup',
+      'Custom intake prompts per location',
+      'Advanced notification rules (when configured)',
+      'Optional weekly digest available',
       'Dedicated onboarding & support',
     ],
   },
@@ -60,10 +52,6 @@ const addOns = [
     name: 'Additional trades/locations',
     description: 'Add more service types or locations to your account',
   },
-  {
-    name: 'CRM/ticketing integration',
-    description: 'Connect with your existing CRM or ticketing system',
-  },
 ];
 
 export default function PricingTable() {
@@ -72,10 +60,10 @@ export default function PricingTable() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Simple, Transparent Pricing
+            Simple, transparent pricing
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose the plan that fits your business. All plans include core features.
+            Choose the plan that fits your call volume. All plans include core features.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">

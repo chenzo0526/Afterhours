@@ -11,9 +11,9 @@ import {
 type StatusKey = 'miss' | 'some' | 'covered';
 
 const statusCopy: Record<StatusKey, string> = {
-  miss: 'If your phone rings after hours and no one answers, you can miss the details.',
-  some: 'If your phone rings after hours and no one answers, you can miss the details.',
-  covered: 'If your phone rings after hours and no one answers, you can miss the details.',
+  miss: "Afterhours answers late-night calls, captures the details, and only alerts your on-call staff member when it's actually urgent.",
+  some: "Afterhours answers late-night calls, captures the details, and only alerts your on-call staff member when it's actually urgent.",
+  covered: "Afterhours answers late-night calls, captures the details, and only alerts your on-call staff member when it's actually urgent.",
 };
 
 const statusOptions = new Set<StatusKey>(['miss', 'some', 'covered']);
@@ -38,14 +38,14 @@ export default function StartPage({
                 Live Trial
               </div>
               <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">
-                Your phone rings after hours. When calls are forwarded, we capture details and notify your on-call contact.
+                Stop losing emergency calls while you're asleep.
               </h1>
               <p className="mt-4 text-lg text-muted-foreground sm:text-xl">{subheadline}</p>
               <ul className="mt-6 space-y-3 text-sm text-muted-foreground sm:text-base">
                 {[
-                  'Handle after-hours and overflow calls when forwarded',
-                  'Capture job details, urgency, and callback preference when shared',
-                  'Send a text summary to your on-call contact after the call (carrier delivery applies)',
+                  'Capture high-value emergencies instead of sending callers to voicemail.',
+                  'Sleep through the night - only real emergencies get escalated.',
+                  'Wake up to a clean morning report with every call summarized.',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check className="mt-0.5 h-5 w-5 text-sky-400" />
@@ -58,23 +58,17 @@ export default function StartPage({
                   Start Live Trial
                 </StartTrialButton>
                 <span className="text-xs text-muted-foreground">
-                  No setup fee. You decide whether to continue after the trial.
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  Afterhours answers after-hours and overflow calls, collects essential details, and notifies your on-call contact. We do not dispatch or promise arrival times.
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  If this is a life-safety emergency, callers should hang up and call 911.
+                  No setup fee. No auto-billing. Cancel anytime.
                 </span>
               </div>
               <div className="mt-6 w-full rounded-2xl border border-border bg-card/70 p-5">
-                <p className="text-sm font-semibold text-foreground">What the live trial includes</p>
+                <p className="text-sm font-semibold text-foreground">What you get</p>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {[
-                    'We take after-hours or overflow calls that you forward',
-                    'A text summary is sent with job details + urgency (carrier delivery applies)',
-                    'One simple handoff (sent to one phone number or email)',
-                    'No auto-billing — you decide whether to continue',
+                    'Every forwarded call answered',
+                    'Urgency + details captured',
+                    'On-call notified only when urgent',
+                    'Morning report for everything else',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <Check className="mt-0.5 h-4 w-4 text-sky-400" />
@@ -82,29 +76,36 @@ export default function StartPage({
                     </li>
                   ))}
                 </ul>
-                <p className="mt-4 text-sm text-muted-foreground">
-                  Multi-recipient notifications and advanced rules can be added after the trial.
+                <p className="mt-4 text-xs text-muted-foreground">
+                  Notification delivery depends on carrier.
                 </p>
               </div>
             </div>
           </div>
-          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-border bg-card/70 p-6 shadow-xl shadow-black/20">
-            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Headphones className="h-5 w-5 text-sky-400" />
-              Hear a short sample of what callers hear
-            </div>
+          <div
+            id="callers-hear"
+            className="mx-auto mt-10 max-w-2xl rounded-2xl border border-border bg-card/70 p-6 shadow-xl shadow-black/20"
+          >
             <audio className="mt-4 w-full" controls preload="none">
               <source src="/audio/retell-agent-19.m4a" type="audio/mp4" />
               Your browser does not support the audio element.
             </audio>
             <div className="mt-6 rounded-xl border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2 text-foreground">
-                <MessageSquareText className="h-4 w-4 text-sky-400" />
-                Live summary preview
+              <div className="flex items-center justify-between gap-3 text-foreground">
+                <div className="flex items-center gap-2">
+                  <MessageSquareText className="h-4 w-4 text-sky-400" />
+                  Live summary preview
+                </div>
+                <a
+                  href="#callers-hear"
+                  className="text-xs font-semibold text-sky-400 transition hover:text-sky-300"
+                >
+                  Hear what callers hear (15 sec)
+                </a>
               </div>
               <p className="mt-2">
-                "Caller: kitchen sink overflow. Requests a callback when available. Address: Oak Ridge Dr.
-                Urgency: high. Callback requested."
+                Caller: Amanda L. | Issue: Water heater leak | Urgency: High | Address: Oak Ridge Dr (shared)
+                | Callback: Next available | Next: Notify on-call
               </p>
             </div>
           </div>
@@ -112,12 +113,16 @@ export default function StartPage({
       </section>
 
       <section className="border-b border-border bg-muted/30">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {['HVAC', 'Plumbing', 'Electrical', 'Restoration', 'Locksmith'].map((item) => (
-              <span key={item} className="rounded-full border border-border px-4 py-2">
-                {item}
-              </span>
+        <div className="container mx-auto px-6 py-10">
+          <div className="grid gap-6 text-center sm:grid-cols-3">
+            {[
+              '70–85% of callers hang up when they hit voicemail.',
+              'Most small businesses answer only ~38% of calls live.',
+              'One emergency job often pays for the month.',
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-border bg-card/70 p-5">
+                <p className="text-sm font-semibold text-foreground">{item}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -128,27 +133,26 @@ export default function StartPage({
           <div className="text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-sky-400">How it works</p>
             <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-              What happens when someone calls after hours
+              What happens when you're closed
             </h2>
           </div>
           <div className="mt-12 grid gap-8 lg:grid-cols-3">
             {[
               {
-                title: 'The call is taken after hours',
+                title: 'Call forwarded',
                 description:
-                  'Afterhours takes the call and lets the caller know their details will be passed along.',
+                  "We answer the late-night call and let the caller know we'll capture the details and alert your team if it's urgent.",
                 icon: PhoneCall,
               },
               {
-                title: 'The job is qualified on the call',
-                description:
-                  'We capture issue, urgency, address, and callback preference when shared.',
+                title: 'We qualify urgency',
+                description: 'We capture the issue, urgency, and callback preference when shared.',
                 icon: MessageSquareText,
               },
               {
-                title: 'A summary is sent after the call',
+                title: 'We notify or report',
                 description:
-                  'A clear summary is sent after the call ends (delivery depends on carrier). No arrival times are promised.',
+                  'Urgent calls trigger an on-call alert; everything else goes to the morning report.',
                 icon: Zap,
               },
             ].map((step) => (
@@ -170,31 +174,67 @@ export default function StartPage({
                 This is what hits your phone
               </p>
               <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-                Clear call details shortly after the call ends
+                A clear, short summary
               </h2>
-              <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-                No voicemail hunting. Fewer partial notes. Key details are captured in one glance.
-              </p>
             </div>
             <div className="rounded-2xl border border-border bg-card p-6 text-sm text-foreground shadow-lg shadow-black/20">
               <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>Afterhours Summary</span>
-                <span>Late night</span>
+                <span>Overnight</span>
               </div>
               <div className="mt-4 space-y-3">
-                <div className="rounded-lg border border-border bg-background px-4 py-3">
-                  <p className="font-semibold">Urgent: water heater leak</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Caller: Amanda L. | Oak Ridge Dr | Callback requested
-                  </p>
-                </div>
-                <div className="grid gap-2 text-xs text-muted-foreground">
-                  <span>Issue: Burst valve, active leak</span>
-                  <span>Preferred window: caller requested next available</span>
-                  <span>On-call: Carlos R.</span>
+                <p className="font-semibold">Urgent: Water heater leak</p>
+                <div className="grid gap-1 text-xs text-muted-foreground">
+                  <span>Caller: Amanda L.</span>
+                  <span>Issue: Active leak from valve</span>
+                  <span>Urgency: High</span>
+                  <span>Address: Oak Ridge Dr (shared)</span>
+                  <span>Callback: Next available</span>
+                  <span>
+                    Next action: <strong>Notify on-call</strong>
+                  </span>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-background">
+        <div className="container mx-auto px-6 py-16 sm:py-20">
+          <div className="text-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-sky-400">Comparison</p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+              Voicemail vs Call Center vs Afterhours
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                title: 'Voicemail',
+                points: ['Missed emergencies', 'No urgency filter', 'Callers hang up'],
+              },
+              {
+                title: 'Call Center',
+                points: ['High monthly cost', 'Generic scripts', 'Mixed urgency handling'],
+              },
+              {
+                title: 'Afterhours',
+                points: ['Every call answered', 'Urgency qualified', 'Only urgent calls escalated'],
+              },
+            ].map((column) => (
+              <div key={column.title} className="rounded-2xl border border-border bg-card/70 p-6">
+                <h3 className="text-lg font-semibold">{column.title}</h3>
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  {column.points.map((point) => (
+                    <li key={point} className="flex items-start gap-2">
+                      <Check className="mt-0.5 h-4 w-4 text-sky-400" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -205,18 +245,11 @@ export default function StartPage({
             <div className="rounded-2xl border border-border bg-card/70 p-6">
               <p className="text-xs uppercase tracking-[0.2em] text-sky-400">Live trial</p>
               <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-                Run Afterhours live — without committing
+                Try it live on your own phone line — no commitment
               </h2>
               <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-                The live trial takes forwarded calls and returns summaries, but you stay in full control.
+                Forward calls, see real summaries, and decide if it fits.
               </p>
-              <p className="mt-4 text-sm text-foreground">
-                <strong>You decide whether to continue after the trial.</strong>
-              </p>
-              <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-                <Check className="h-4 w-4 text-sky-400" />
-                No setup fee. You decide whether to continue after the trial.
-              </div>
             </div>
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <div className="flex items-start gap-3">
@@ -226,7 +259,7 @@ export default function StartPage({
                 <div>
                   <p className="text-sm font-semibold">Clear handoff</p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    We walk you through forwarding and, when possible, run a test call during setup.
+                    We walk you through forwarding and run a required test call before go-live.
                   </p>
                 </div>
               </div>
@@ -237,7 +270,7 @@ export default function StartPage({
                 <div>
                   <p className="text-sm font-semibold">Clear visibility</p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    Text summaries include a call summary record and notification attempt record; delivery depends on carrier.
+                    You&apos;ll get a clean call summary and notification attempt record.
                   </p>
                 </div>
               </div>
@@ -265,7 +298,10 @@ export default function StartPage({
               Simple, predictable monthly pricing
             </h2>
             <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-              Plans scale with your shop and call volume. You choose a plan only after your trial.
+              Pick a plan after your trial based on call volume.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+              Most shops start simple and adjust once they see real call volume.
             </p>
           </div>
         </div>
@@ -277,14 +313,29 @@ export default function StartPage({
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-sky-400">Start live trial</p>
               <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-                Start your live trial (often about 30 minutes once forwarding is ready)
+                Start once forwarding is ready
               </h2>
               <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-                Setup includes call forwarding and, when possible, a test call so you can hear it live.
+                We set up forwarding and run a quick test call.
               </p>
-              <div className="mt-6 flex items-center gap-3 text-xs text-muted-foreground">
-                <Check className="h-4 w-4 text-sky-400" />
-                You decide whether to continue after the trial.
+              <div className="mt-6 rounded-2xl border border-border bg-card/70 p-5">
+                <p className="text-sm font-semibold text-foreground">Setup checklist</p>
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  {[
+                    'Spoken company name',
+                    'Primary on-call contact',
+                    'When you consider calls urgent (nights, weekends, emergencies) + your timezone',
+                    'Service area boundaries and exclusions',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <Check className="mt-0.5 h-4 w-4 text-sky-400" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-xs text-muted-foreground">
+                  Go-live happens after the test call is approved.
+                </p>
               </div>
             </div>
             <form
@@ -368,7 +419,7 @@ export default function StartPage({
                     name="notes"
                     rows={4}
                     className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
-                    placeholder="Anything we should know about your after-hours flow"
+                    placeholder="Anything we should know about your overnight flow"
                   />
                 </label>
               </div>
@@ -380,7 +431,10 @@ export default function StartPage({
                 Start Live Trial
               </button>
               <p className="mt-3 text-center text-xs text-muted-foreground">
-                No setup fee. You decide whether to continue after the trial.
+                No setup fee. No auto-billing. Cancel anytime.
+              </p>
+              <p className="mt-2 text-center text-xs text-muted-foreground">
+                We confirm your setup details before the required test call and go-live.
               </p>
             </form>
           </div>
@@ -399,19 +453,23 @@ export default function StartPage({
             {[
               {
                 q: 'Is it really free to try?',
-                a: 'Yes. No auto-billing. You decide whether to continue after the trial.',
+                a: 'Yes. You can try it without committing.',
               },
               {
-                q: 'What does the trial include?',
-                a: 'Call intake + clean summaries sent to one destination. Advanced notification rules unlock after.',
+                q: 'What happens on urgent calls?',
+                a: 'We notify your on-call contact with the summary right away.',
+              },
+              {
+                q: "What happens when it's not urgent?",
+                a: 'It goes to the morning report with full details.',
               },
               {
                 q: 'How fast can we start?',
-                a: 'Setup time varies; often about 30 minutes once forwarding is ready.',
+                a: 'As soon as forwarding is ready, usually within a day.',
               },
               {
                 q: 'Do we need new hardware?',
-                a: 'No. You forward your existing after-hours calls and we capture the details.',
+                a: 'No. Use your existing number with call forwarding.',
               },
             ].map((item) => (
               <div key={item.q} className="rounded-2xl border border-border bg-card/70 p-6">
@@ -420,6 +478,13 @@ export default function StartPage({
               </div>
             ))}
           </div>
+          <div className="mt-8 text-center text-xs text-muted-foreground">
+            <p className="font-semibold">Important notes:</p>
+            <p className="mt-2">
+              We don&apos;t promise arrival times — we pass the details and urgency to your team.
+            </p>
+            <p className="mt-2">If this is a life-threatening emergency, call 911.</p>
+          </div>
         </div>
       </section>
 
@@ -427,11 +492,8 @@ export default function StartPage({
         <div className="container mx-auto px-6 py-16 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-white/70">Ready</p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-            See what your after-hours calls can look like
+            See how late-night calls get handled
           </h2>
-          <p className="mt-3 text-sm text-white/80">
-            No setup fee. You decide whether to continue after the trial.
-          </p>
           <StartTrialButton className="mt-6 inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-sky-600 transition hover:bg-white/90">
             Start Live Trial
           </StartTrialButton>

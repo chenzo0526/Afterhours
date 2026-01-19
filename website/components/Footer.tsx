@@ -44,13 +44,8 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-foreground mb-4">Contact</h4>
             <p className="text-sm text-muted-foreground">
-              <a href="mailto:hello@afterhours.com" className="hover:text-foreground">
-                hello@afterhours.com
-              </a>
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              <a href="tel:+15551234567" className="hover:text-foreground">
-                (555) 123-4567
+              <a href="mailto:support@afterhours.com" className="hover:text-foreground">
+                support@afterhours.com
               </a>
             </p>
           </div>

@@ -5,11 +5,10 @@ export default function Hero() {
     <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-          After-hours calls, captured and summarized.
+          Stop losing emergency calls while you're asleep.
         </h1>
         <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          After-hours and overflow calls that you forward are handled, details are gathered, and a summary
-          is sent to your on-call contact for follow-up.
+          Afterhours answers late-night calls, captures the details, and only alerts your on-call staff member when it's actually urgent.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Link

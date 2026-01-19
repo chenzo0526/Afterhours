@@ -39,8 +39,8 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-gray-900 mb-4">Contact</h4>
             <p className="text-sm text-gray-600">
-              <a href="mailto:hello@afterhours.com" className="hover:text-gray-900">
-                hello@afterhours.com
+              <a href="mailto:support@afterhours.com" className="hover:text-gray-900">
+                support@afterhours.com
               </a>
             </p>
           </div>

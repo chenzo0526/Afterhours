@@ -66,9 +66,15 @@ export default function GetStarted() {
         <section style={{ paddingTop: '80px' }}>
           <div className="container">
             <div className="section-header">
-              <h1>Let's Start with a 10-Minute Conversation</h1>
+              <h1>Let's Start with a Brief Conversation</h1>
               <p style={{ fontSize: '1.25rem', color: '#666666' }}>
-                We may reach out by phone to understand your business and send a trial summary you can review.
+                We may reach out by phone to understand your after-hours flow and confirm setup requirements.
+              </p>
+              <p style={{ fontSize: '0.95rem', color: '#666666', marginTop: '12px' }}>
+                We answer after-hours and overflow calls, collect the details, and notify your on-call contact. We don&apos;t dispatch or promise arrival times.
+              </p>
+              <p style={{ fontSize: '0.85rem', color: '#666666', marginTop: '8px' }}>
+                If this is a life-safety emergency, callers should hang up and call 911.
               </p>
             </div>
 
@@ -79,8 +85,9 @@ export default function GetStarted() {
                 <ol style={{ paddingLeft: '24px', color: '#666666' }}>
                   <li style={{ marginBottom: '12px' }}>You fill out the form below</li>
                   <li style={{ marginBottom: '12px' }}>We may reach out by phone to schedule a brief call</li>
+                  <li style={{ marginBottom: '12px' }}>We confirm setup requirements and schedule a required test call</li>
                   <li style={{ marginBottom: '12px' }}>We send a trial summary based on the conversation</li>
-                  <li style={{ marginBottom: '12px' }}>You review and decide if it's a fit</li>
+                  <li style={{ marginBottom: '12px' }}>Go-live happens only after the test call is approved</li>
                 </ol>
               </div>
 

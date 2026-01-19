@@ -4,43 +4,25 @@ import { useState } from 'react';
 
 const faqs = [
   {
-    question: 'Will this replace my team?',
-    answer:
-      "No. Afterhours handles after-hours and overflow call intake and sends a summary to your team. It's designed to complement your existing workflow, not replace it.",
+    question: 'Is it really free to try?',
+    answer: "Yes. It's free to try and easy to stop.",
   },
   {
-    question: 'What if the customer is angry?',
+    question: 'What happens on urgent calls?',
     answer:
-      'We keep a calm, professional tone and capture the details. If you enable a handoff and someone is available, the caller can request it.',
+      "We notify your on-call contact right away. If it's life-threatening, callers should call 911.",
   },
   {
-    question: 'Can it transfer to a human?',
-    answer:
-      'If you enable a handoff and it is staffed, callers can request it. Otherwise we capture details and notify your on-call contact.',
+    question: "What happens when it's not urgent?",
+    answer: 'It goes to the morning report with full details.',
   },
   {
-    question: "How does it handle urgent calls?",
-    answer:
-      "It asks a few questions to assess urgency and labels the call based on the caller's answers. You decide how those labels are used for notifications.",
-  },
-  {
-    question: 'What about emergencies?',
-    answer:
-      'If a caller indicates a life-safety emergency, we instruct them to hang up and call 911. We do not dispatch or promise arrival times.',
-  },
-  {
-    question: 'Does it work with my existing number?',
-    answer:
-      'Yes. Afterhours works with your existing phone number via call forwarding or a supported carrier setup. We confirm the best option during onboarding.',
-  },
-  {
-    question: 'How fast are notifications sent?',
-    answer:
-      'Summaries are sent after the call ends by SMS and email. Delivery timing depends on the carrier and email provider.',
+    question: 'How fast can we start?',
+    answer: 'As soon as forwarding is ready, usually within a day.',
   },
   {
     question: 'Do I need new hardware?',
-    answer: 'No. Afterhours works entirely in the cloud. You just need to configure call forwarding or use your existing phone system. No new phones, hardware, or equipment required.',
+    answer: 'No. Use your existing number with call forwarding.',
   },
 ];
 

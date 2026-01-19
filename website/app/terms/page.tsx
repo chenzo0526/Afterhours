@@ -121,8 +121,8 @@ export default function Terms() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Contact Us</h2>
           <p className="text-gray-700">
             If you have questions about these Terms, please contact us at{' '}
-            <a href="mailto:hello@afterhours.com" className="text-accent hover:underline">
-              hello@afterhours.com
+            <a href="mailto:support@afterhours.com" className="text-accent hover:underline">
+              support@afterhours.com
             </a>
           </p>
         </section>

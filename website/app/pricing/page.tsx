@@ -8,17 +8,14 @@ export default function Pricing() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-            Simple, Transparent Pricing
+            Simple pricing for late-night coverage
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Choose the plan that fits your business. All plans include core features.
+            Choose the plan that fits your call volume. All plans include core features.
           </p>
         </div>
         <p className="text-center text-sm text-muted-foreground mb-8">
-          Start with the live trial (core handoff). Upgrade if you need multi-recipient notifications or advanced routing.
-        </p>
-        <p className="text-center text-xs text-muted-foreground mb-12">
-          Afterhours answers after-hours and overflow calls, collects essential details, and notifies your on-call contact. We do not dispatch or promise arrival times.
+          Start with the live trial. Upgrade if you need multi-recipient notifications or extra routing.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
@@ -32,7 +29,7 @@ export default function Pricing() {
             </div>
             <ul className="space-y-3 mb-8">
               {[
-                'After-hours + overflow call intake',
+                'Late-night call answering',
                 'Clean call summaries (text)',
                 'Urgency tagging',
                 'Spam filtering',
@@ -67,8 +64,7 @@ export default function Pricing() {
             <ul className="space-y-3 mb-8">
               {[
                 'Multi-recipient notifications (send summaries to multiple contacts)',
-                'Conditional notifications (urgent vs non-urgent)',
-                'Multi-contact on-call support',
+                'Additional notification destinations (when configured)',
                 'Advanced business hour rules',
                 'Call recording',
                 'Priority support',
@@ -95,10 +91,10 @@ export default function Pricing() {
             <ul className="space-y-3 mb-8">
               {[
                 'Multiple business numbers',
-                'Multi-location notification rules',
-                'Backup contact routing',
+                'Multi-location setup',
+                'Backup contact notifications (when configured)',
                 'Call recording retention',
-                'Weekly digest summaries',
+                'Optional weekly digest available',
                 'Dedicated onboarding',
               ].map((feature, i) => (
                 <li key={i} className="flex items-start gap-2">

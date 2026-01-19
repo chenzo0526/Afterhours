@@ -5,16 +5,17 @@ If a surface is not listed here, do not edit it unless creating a missing requir
 
 ---
 
-## 1) Website (customer-facing)
-- Homepage / Hero: src/app/page.tsx
-- Pricing page: src/app/pricing/page.tsx
-- Trial page: src/app/trial/page.tsx
+## 1) Website (customer-facing) — LIVE (Next.js under /website)
+- Trial / Start page: website/app/start/page.tsx
+- Pricing page: website/app/pricing/page.tsx
+- How-it-works page: website/app/how-it-works/page.tsx (if present)
+- Shared layout: website/app/layout.tsx and any shared layout components
+- Shared UI copy: website/components/** (Hero, Steps, FeatureGrid, PricingTable, FAQ, Header, Footer, CTA)
+- App-level components: website/app/components/**
+- Copy constants under website/ (search for copy.ts, constants, content maps)
 
-### Shared UI copy
-- Header / Nav: src/components/Header.tsx
-- Footer: src/components/Footer.tsx
-- CTA components: src/components/CTA.tsx
-- Copy constants: src/lib/copy.ts
+### Non-live legacy (do not edit for runtime)
+- src/** (legacy Next.js surface; not deployed)
 
 ---
 

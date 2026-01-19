@@ -89,8 +89,8 @@ export default function Privacy() {
           </ul>
           <p className="text-gray-700 mt-4">
             To exercise these rights, please contact us at{' '}
-            <a href="mailto:hello@afterhours.com" className="text-accent hover:underline">
-              hello@afterhours.com
+            <a href="mailto:support@afterhours.com" className="text-accent hover:underline">
+              support@afterhours.com
             </a>
           </p>
         </section>
@@ -99,8 +99,8 @@ export default function Privacy() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Contact Us</h2>
           <p className="text-gray-700">
             If you have questions about this Privacy Policy, please contact us at{' '}
-            <a href="mailto:hello@afterhours.com" className="text-accent hover:underline">
-              hello@afterhours.com
+            <a href="mailto:support@afterhours.com" className="text-accent hover:underline">
+              support@afterhours.com
             </a>
           </p>
         </section>
