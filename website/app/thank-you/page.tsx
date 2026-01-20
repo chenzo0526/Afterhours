@@ -29,18 +29,21 @@ export default function ThankYouPage() {
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               {[
                 {
-                  title: "In 10 minutes",
-                  description: "You'll get a Setup Kit with forwarding steps and the test-call plan.",
+                  title: "Next 10 minutes",
+                  description:
+                    "You'll receive your Setup Kit with forwarding steps + a quick test-call plan.",
                   icon: Clock,
                 },
                 {
-                  title: "Tonight",
-                  description: "We're on standby to run your first live test call.",
+                  title: "Today",
+                  description:
+                    "If you want it, reply with any tweaks (service area, exclusions, on-call number).",
                   icon: PhoneCall,
                 },
                 {
                   title: "Tomorrow morning",
-                  description: "You'll receive your first call summary and tuning notes.",
+                  description:
+                    "You'll get your first clean call summary once forwarding is live.",
                   icon: Mail,
                 },
               ].map((item) => (
@@ -65,10 +68,6 @@ export default function ThankYouPage() {
                 Back to Start
               </a>
             </div>
-            <p className="mt-6 text-xs text-muted-foreground">
-              Important notes: We confirm forwarding details before the test call. Notification delivery
-              depends on carrier. If anyone is in immediate danger, callers should hang up and dial 911.
-            </p>
           </div>
         </div>
       </section>

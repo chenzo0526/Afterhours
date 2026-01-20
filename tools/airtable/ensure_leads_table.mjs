@@ -1,13 +1,10 @@
 import process from "node:process";
 
+// Run: AIRTABLE_ACCESS_TOKEN=... AIRTABLE_BASE_ID=... node tools/airtable/ensure_leads_table.mjs
 const { AIRTABLE_ACCESS_TOKEN, AIRTABLE_BASE_ID } = process.env;
+const AIRTABLE_TABLE_LEADS = process.env.AIRTABLE_TABLE_LEADS || "Leads";
 const AIRTABLE_META_BASE = "https://api.airtable.com/v0/meta";
-const LEAD_TABLE_CANDIDATES = [
-  "Leads",
-  "Trial Leads",
-  "Live Trial Leads",
-  "Start Live Trial",
-];
+const LEAD_TABLE_CANDIDATES = [AIRTABLE_TABLE_LEADS, "Leads", "Trial Leads", "Live Trial Leads"];
 
 function requireEnv() {
   if (!AIRTABLE_ACCESS_TOKEN || !AIRTABLE_BASE_ID) {
@@ -76,28 +73,16 @@ function buildLeadFieldSchema() {
     { name: "Phone", type: "phoneNumber" },
     { name: "Email", type: "email" },
     { name: "Trade", type: "singleLineText" },
-    { name: "Company Website", type: "url" },
+    { name: "Website", type: "url" },
     { name: "Notes", type: "multilineText" },
     { name: "Source", type: "singleLineText" },
-    { name: "Submitted At", type: "dateTime" },
-    {
-      name: "Status",
-      type: "singleSelect",
-      options: {
-        choices: [
-          { name: "New" },
-          { name: "Contacted" },
-          { name: "Trial Started" },
-          { name: "Closed" },
-        ],
-      },
-    },
+    { name: "Created At", type: "dateTime" },
   ];
 }
 
 async function createLeadTable() {
   const payload = {
-    name: "Leads",
+    name: AIRTABLE_TABLE_LEADS,
     fields: buildLeadFieldSchema(),
   };
 
@@ -112,6 +97,31 @@ async function createLeadTable() {
   return data;
 }
 
+async function createField(tableId, field) {
+  return fetchJson(
+    `${AIRTABLE_META_BASE}/bases/${AIRTABLE_BASE_ID}/tables/${tableId}/fields`,
+    {
+      method: "POST",
+      body: JSON.stringify(field),
+    }
+  );
+}
+
+async function ensureLeadFields(leadTable) {
+  const existing = new Set((leadTable.fields || []).map((field) => normalize(field.name)));
+  const missing = buildLeadFieldSchema().filter(
+    (field) => !existing.has(normalize(field.name))
+  );
+
+  if (!missing.length) {
+    return;
+  }
+
+  for (const field of missing) {
+    await createField(leadTable.id, field);
+  }
+}
+
 async function main() {
   requireEnv();
 
@@ -119,7 +129,9 @@ async function main() {
   let leadTable = findLeadTable(tables);
 
   if (leadTable) {
-    console.log(JSON.stringify(summarizeTable(leadTable), null, 2));
+    await ensureLeadFields(leadTable);
+    const refreshed = (await loadSchema()).find((table) => table.id === leadTable.id);
+    console.log(JSON.stringify(summarizeTable(refreshed || leadTable), null, 2));
     return;
   }
 
@@ -134,10 +146,7 @@ async function main() {
   } catch (err) {
     console.error("Lead table not found and could not be created.");
     console.error(
-      "Create a table named \"Leads\" with fields: Name, Business Name, Phone, Email, Trade, Company Website, Notes, Source, Submitted At, Status."
-    );
-    console.error(
-      "Until then, configure the Businesses table with a long text field named \"Inbound Trial Lead JSON\" for fallback capture."
+      `Create a table named "${AIRTABLE_TABLE_LEADS}" with fields: Name, Business Name, Phone, Email, Trade, Website, Notes, Source, Created At.`
     );
     console.error(err?.message || err);
   }

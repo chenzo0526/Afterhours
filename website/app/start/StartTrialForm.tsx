@@ -58,17 +58,14 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
 
       const data = await response.json().catch(() => null);
       if (!response.ok || !data?.ok) {
-        const message =
-          (data && typeof data.error === "string" && data.error) ||
-          "Something went wrong. Please try again in a moment.";
-        setError(message);
+        setError("Something went wrong — please try again.");
         setIsSubmitting(false);
         return;
       }
 
       router.push("/thank-you");
     } catch (err) {
-      setError("Something went wrong. Please try again in a moment.");
+      setError("Something went wrong — please try again.");
       setIsSubmitting(false);
     }
   };
