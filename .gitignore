@@ -42,3 +42,6 @@ example_leads.csv
 .secrets/
 .env
 .envrc
+
+# Secrets
+.env*
