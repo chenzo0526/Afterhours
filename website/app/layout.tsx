@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://afterhourscoverage.com'),
   title: 'Afterhours',
   description:
     'After-hours call intake for local service businesses. Capture details and notify your on-call contact.',
