@@ -1,47 +1,75 @@
-import Link from 'next/link';
-import { Calendar, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Clock, Mail, PhoneCall, Sparkles } from "lucide-react";
 
 export default function ThankYouPage() {
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#';
-  const smsNumber = process.env.NEXT_PUBLIC_SMS_NUMBER || '';
-  const smsHref = smsNumber ? `sms:${smsNumber}` : '#';
-
   return (
     <div className="bg-background text-foreground">
-      <section className="container mx-auto px-6 py-20 sm:py-24">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card/80 p-8 text-center shadow-xl shadow-black/20 sm:p-12">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sky-500/10">
-            <CheckCircle2 className="h-6 w-6 text-sky-400" />
+      <section className="border-b border-border">
+        <div className="container mx-auto px-6 py-16 sm:py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-sky-400">
+              <Sparkles className="h-4 w-4" />
+              Live Trial Confirmed
+            </div>
+            <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">
+              You&apos;re in — your live trial is on the way.
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
+              We received your details. A specialist is putting together your Setup Kit now.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-2 text-sm">
+                <CheckCircle2 className="h-4 w-4 text-sky-400" />
+                <span>Check your email for the Setup Kit</span>
+              </div>
+            </div>
           </div>
-          <h1 className="mt-6 text-3xl font-semibold sm:text-4xl">You're all set.</h1>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            We'll confirm when your live trial is ready.
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <a
-              href={calendlyUrl}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-400"
-            >
-              <Calendar className="h-4 w-4" />
-              Book 10-minute setup
-            </a>
-            <a
-              href={smsHref}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-300"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Text us
-            </a>
+
+          <div className="mx-auto mt-12 max-w-4xl rounded-2xl border border-border bg-card/70 p-6 sm:p-8">
+            <h2 className="text-lg font-semibold">What happens next</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  title: "In 10 minutes",
+                  description: "You&apos;ll get a Setup Kit with forwarding steps and the test-call plan.",
+                  icon: Clock,
+                },
+                {
+                  title: "Tonight",
+                  description: "We&apos;re on standby to run your first live test call.",
+                  icon: PhoneCall,
+                },
+                {
+                  title: "Tomorrow morning",
+                  description: "You&apos;ll receive your first call summary and tuning notes.",
+                  icon: Mail,
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-xl border border-border bg-background/60 p-4">
+                  <item.icon className="h-5 w-5 text-sky-400" />
+                  <p className="mt-3 text-sm font-semibold">{item.title}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="mailto:support@afterhours.com?subject=Setup%20Kit%20Question"
+                className="inline-flex flex-1 items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400"
+              >
+                Check your email for the Setup Kit
+              </a>
+              <a
+                href="mailto:support@afterhours.com?subject=Book%2010-min%20setup%20call"
+                className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-400"
+              >
+                Book 10-min setup call
+              </a>
+            </div>
+            <p className="mt-6 text-xs text-muted-foreground">
+              Important notes: We confirm forwarding details before the test call. Notification delivery
+              depends on carrier. If this is a life-threatening emergency, call 911.
+            </p>
           </div>
-          <p className="mt-6 text-xs text-muted-foreground">
-            Need another trial? You can start again anytime.
-          </p>
-          <Link
-            href="/start"
-            className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.2em] text-sky-400"
-          >
-            Back to start
-          </Link>
         </div>
       </section>
     </div>
