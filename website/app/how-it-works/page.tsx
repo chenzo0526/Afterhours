@@ -65,7 +65,7 @@ export default function HowItWorks() {
           </div>
           <div className="mt-10 text-center text-xs text-muted-foreground">
             <p>We don't promise arrival times — we pass the details and urgency to your team.</p>
-            <p className="mt-2">If this is a life-threatening emergency, call 911.</p>
+            <p className="mt-2">If anyone is in immediate danger, call 911.</p>
           </div>
         </div>
       </div>

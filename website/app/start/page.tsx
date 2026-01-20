@@ -386,7 +386,7 @@ export default function StartPage({
             <p className="mt-2">
               We don&apos;t promise arrival times — we pass the details and urgency to your team.
             </p>
-            <p className="mt-2">If this is a life-threatening emergency, call 911.</p>
+            <p className="mt-2">If anyone is in immediate danger, call 911.</p>
           </div>
         </div>
       </section>

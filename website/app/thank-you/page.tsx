@@ -1,5 +1,7 @@
 import { CheckCircle2, Clock, Mail, PhoneCall, Sparkles } from "lucide-react";
 
+const setupCallUrl = "";
+
 export default function ThankYouPage() {
   return (
     <div className="bg-background text-foreground">
@@ -11,7 +13,7 @@ export default function ThankYouPage() {
               Live Trial Confirmed
             </div>
             <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">
-              You&apos;re in — your live trial is on the way.
+              You're in — your live trial is on the way.
             </h1>
             <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
               We received your details. A specialist is putting together your Setup Kit now.
@@ -30,17 +32,17 @@ export default function ThankYouPage() {
               {[
                 {
                   title: "In 10 minutes",
-                  description: "You&apos;ll get a Setup Kit with forwarding steps and the test-call plan.",
+                  description: "You'll get a Setup Kit with forwarding steps and the test-call plan.",
                   icon: Clock,
                 },
                 {
                   title: "Tonight",
-                  description: "We&apos;re on standby to run your first live test call.",
+                  description: "We're on standby to run your first live test call.",
                   icon: PhoneCall,
                 },
                 {
                   title: "Tomorrow morning",
-                  description: "You&apos;ll receive your first call summary and tuning notes.",
+                  description: "You'll receive your first call summary and tuning notes.",
                   icon: Mail,
                 },
               ].map((item) => (
@@ -53,21 +55,23 @@ export default function ThankYouPage() {
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:support@afterhours.com?subject=Setup%20Kit%20Question"
+                href="/how-it-works"
                 className="inline-flex flex-1 items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400"
               >
-                Check your email for the Setup Kit
+                See how it works
               </a>
-              <a
-                href="mailto:support@afterhours.com?subject=Book%2010-min%20setup%20call"
-                className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-400"
-              >
-                Book 10-min setup call
-              </a>
+              {setupCallUrl ? (
+                <a
+                  href={setupCallUrl}
+                  className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-400"
+                >
+                  Book 10-min setup call
+                </a>
+              ) : null}
             </div>
             <p className="mt-6 text-xs text-muted-foreground">
               Important notes: We confirm forwarding details before the test call. Notification delivery
-              depends on carrier. If this is a life-threatening emergency, call 911.
+              depends on carrier. If anyone is in immediate danger, call 911.
             </p>
           </div>
         </div>
