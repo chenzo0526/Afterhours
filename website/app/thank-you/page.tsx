@@ -1,7 +1,5 @@
 import { CheckCircle2, Clock, Mail, PhoneCall, Sparkles } from "lucide-react";
 
-const setupCallUrl = "";
-
 export default function ThankYouPage() {
   return (
     <div className="bg-background text-foreground">
@@ -60,18 +58,16 @@ export default function ThankYouPage() {
               >
                 See how it works
               </a>
-              {setupCallUrl ? (
-                <a
-                  href={setupCallUrl}
-                  className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-400"
-                >
-                  Book 10-min setup call
-                </a>
-              ) : null}
+              <a
+                href="/start"
+                className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-400"
+              >
+                Back to Start
+              </a>
             </div>
             <p className="mt-6 text-xs text-muted-foreground">
               Important notes: We confirm forwarding details before the test call. Notification delivery
-              depends on carrier. If anyone is in immediate danger, call 911.
+              depends on carrier. If anyone is in immediate danger, callers should hang up and dial 911.
             </p>
           </div>
         </div>

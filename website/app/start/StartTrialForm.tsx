@@ -12,6 +12,20 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const normalizeWebsite = (value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed)
+      ? trimmed
+      : `https://${trimmed}`;
+    try {
+      const url = new URL(withScheme);
+      return url.toString();
+    } catch {
+      return "";
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
@@ -21,6 +35,20 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
       const form = event.currentTarget;
       const formData = new FormData(form);
       const payload = Object.fromEntries(formData.entries());
+      const websiteRaw = String(payload.website ?? "");
+      const normalizedWebsite = normalizeWebsite(websiteRaw);
+
+      if (websiteRaw.trim().length && !normalizedWebsite) {
+        setError("Please enter a valid website URL.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (normalizedWebsite) {
+        payload.website = normalizedWebsite;
+      } else {
+        delete payload.website;
+      }
 
       const response = await fetch("/api/lead", {
         method: "POST",
@@ -28,8 +56,14 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error("Request failed");
+      const data = await response.json().catch(() => null);
+      if (!response.ok || !data?.ok) {
+        const message =
+          (data && typeof data.error === "string" && data.error) ||
+          "Something went wrong. Please try again in a moment.";
+        setError(message);
+        setIsSubmitting(false);
+        return;
       }
 
       router.push("/thank-you");
@@ -106,9 +140,15 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
           Company website (optional)
           <input
             name="website"
-            type="url"
+            type="text"
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
             placeholder="https://yourcompany.com"
+            onBlur={(event) => {
+              const normalized = normalizeWebsite(event.currentTarget.value);
+              if (normalized) {
+                event.currentTarget.value = normalized;
+              }
+            }}
           />
           <span className="mt-2 block text-[11px] font-normal normal-case tracking-normal text-muted-foreground">
             Helps us tailor the call flow to your services and service area.
@@ -129,11 +169,21 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
         type="submit"
         disabled={isSubmitting}
         className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-70"
+        aria-busy={isSubmitting}
       >
-        Start Live Trial
+        {isSubmitting ? (
+          <span className="inline-flex items-center gap-2">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/60 border-t-transparent" />
+            Submitting...
+          </span>
+        ) : (
+          "Start Live Trial"
+        )}
       </button>
       {error ? (
-        <p className="mt-3 text-center text-xs text-red-400">{error}</p>
+        <p className="mt-3 text-center text-xs text-red-400" role="alert">
+          {error}
+        </p>
       ) : (
         <p className="mt-3 text-center text-xs text-muted-foreground">
           No setup fee. No auto-billing. Cancel anytime.

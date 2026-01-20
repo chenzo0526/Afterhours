@@ -14,18 +14,32 @@ type AirtableTable = {
 
 const AIRTABLE_ACCESS_TOKEN = process.env.AIRTABLE_ACCESS_TOKEN;
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+const AIRTABLE_TABLE_LEADS = process.env.AIRTABLE_TABLE_LEADS || "Leads";
 const AIRTABLE_META_BASE = "https://api.airtable.com/v0/meta";
 const AIRTABLE_DATA_BASE = "https://api.airtable.com/v0";
 
 const LEAD_TABLE_CANDIDATES = [
+  AIRTABLE_TABLE_LEADS,
   "Leads",
   "Trial Leads",
   "Live Trial Leads",
   "Start Live Trial",
 ];
 const FALLBACK_TABLE_NAME = "Businesses";
-const FALLBACK_FIELD_NAME = "Inbound Trial Lead JSON";
 const CACHE_TTL_MS = 5 * 60 * 1000;
+
+type LeadApiErrorCode = "MISSING_ENV" | "AIRTABLE_ERROR" | "VALIDATION_ERROR";
+
+class LeadApiError extends Error {
+  code: LeadApiErrorCode;
+  status: number;
+
+  constructor(code: LeadApiErrorCode, message: string, status = 500) {
+    super(message);
+    this.code = code;
+    this.status = status;
+  }
+}
 
 let cachedTables: { fetchedAt: number; tables: AirtableTable[] } | null = null;
 
@@ -45,7 +59,7 @@ function pickValue(body: Record<string, unknown>, keys: string[]) {
 
 async function fetchJson<T>(url: string, options: RequestInit = {}) {
   if (!AIRTABLE_ACCESS_TOKEN) {
-    throw new Error("Missing AIRTABLE_ACCESS_TOKEN");
+    throw new LeadApiError("MISSING_ENV", "Missing AIRTABLE_ACCESS_TOKEN", 500);
   }
 
   const response = await fetch(url, {
@@ -59,8 +73,10 @@ async function fetchJson<T>(url: string, options: RequestInit = {}) {
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(
-      `Airtable API request failed (${response.status}): ${text || "No response body"}`
+    throw new LeadApiError(
+      "AIRTABLE_ERROR",
+      `Airtable API request failed (${response.status}): ${text || "No response body"}`,
+      502
     );
   }
 
@@ -73,7 +89,7 @@ async function loadTables() {
   }
 
   if (!AIRTABLE_BASE_ID) {
-    throw new Error("Missing AIRTABLE_BASE_ID");
+    throw new LeadApiError("MISSING_ENV", "Missing AIRTABLE_BASE_ID", 500);
   }
 
   const data = await fetchJson<{ tables: AirtableTable[] }>(
@@ -97,62 +113,44 @@ function resolveFieldName(fields: AirtableField[], candidates: string[]) {
   return "";
 }
 
-function buildLeadFieldSchema() {
-  return [
-    { name: "Name", type: "singleLineText" },
-    { name: "Business Name", type: "singleLineText" },
-    { name: "Phone", type: "phoneNumber" },
-    { name: "Email", type: "email" },
-    { name: "Trade", type: "singleLineText" },
-    { name: "Company Website", type: "url" },
-    { name: "Notes", type: "multilineText" },
-    { name: "Source", type: "singleLineText" },
-    { name: "Submitted At", type: "dateTime" },
-    {
-      name: "Status",
-      type: "singleSelect",
-      options: {
-        choices: [
-          { name: "New" },
-          { name: "Contacted" },
-          { name: "Trial Started" },
-          { name: "Closed" },
-        ],
-      },
-    },
-  ];
-}
-
-async function ensureLeadTable(tables: AirtableTable[]) {
-  const existing = findTableByName(tables, LEAD_TABLE_CANDIDATES);
-  if (existing) return existing;
-
+function normalizeWebsiteInput(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
   try {
-    const created = await fetchJson<AirtableTable>(
-      `${AIRTABLE_META_BASE}/bases/${AIRTABLE_BASE_ID}/tables`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          name: "Leads",
-          fields: buildLeadFieldSchema(),
-        }),
-      }
-    );
-    return created;
-  } catch (err) {
-    console.log("[lead] Lead table not found and could not be created.");
-    return null;
+    const url = new URL(withScheme);
+    return url.toString();
+  } catch {
+    return "";
   }
 }
 
-async function createRecord(tableId: string, fields: Record<string, unknown>) {
+async function createRecord(tableIdOrName: string, fields: Record<string, unknown>) {
+  if (!AIRTABLE_BASE_ID) {
+    throw new LeadApiError("MISSING_ENV", "Missing AIRTABLE_BASE_ID", 500);
+  }
+
   const url = `${AIRTABLE_DATA_BASE}/${AIRTABLE_BASE_ID}/${encodeURIComponent(
-    tableId
+    tableIdOrName
   )}`;
-  await fetchJson(url, {
+  const data = await fetchJson<{ records?: Array<{ id: string }> }>(url, {
     method: "POST",
     body: JSON.stringify({ records: [{ fields }] }),
   });
+
+  return data?.records?.[0]?.id || "";
+}
+
+function logError(err: unknown, context?: Record<string, unknown>) {
+  if (err instanceof LeadApiError) {
+    console.error("[LEAD_API]", { code: err.code, message: err.message, ...context });
+    return;
+  }
+
+  const message = err instanceof Error ? err.message : "Unknown error";
+  console.error("[LEAD_API]", { code: "AIRTABLE_ERROR", message, ...context });
 }
 
 export async function POST(req: Request) {
@@ -173,6 +171,7 @@ export async function POST(req: Request) {
     const website = pickValue(body, ["website", "companyWebsite", "company_website", "url"]);
     const notes = pickValue(body, ["notes", "note"]);
     const statusHint = pickValue(body, ["status"]);
+    const normalizedWebsite = normalizeWebsiteInput(website);
 
     const missing: string[] = [];
     if (!name) missing.push("name");
@@ -182,109 +181,191 @@ export async function POST(req: Request) {
     if (!trade) missing.push("trade");
 
     if (missing.length) {
-      return NextResponse.json(
-        { ok: false, error: `Missing required fields: ${missing.join(", ")}` },
-        { status: 400 }
+      throw new LeadApiError(
+        "VALIDATION_ERROR",
+        `Missing required fields: ${missing.join(", ")}`,
+        400
       );
     }
 
-    if (!AIRTABLE_ACCESS_TOKEN || !AIRTABLE_BASE_ID) {
-      return NextResponse.json(
-        { ok: false, error: "Airtable is not configured" },
-        { status: 500 }
+    if (website && !normalizedWebsite) {
+      throw new LeadApiError(
+        "VALIDATION_ERROR",
+        "Invalid website URL.",
+        400
       );
     }
 
-    const tables = await loadTables();
-    const leadTable = await ensureLeadTable(tables);
+    if (!AIRTABLE_ACCESS_TOKEN) {
+      throw new LeadApiError("MISSING_ENV", "Missing AIRTABLE_ACCESS_TOKEN", 500);
+    }
+
+    if (!AIRTABLE_BASE_ID) {
+      throw new LeadApiError("MISSING_ENV", "Missing AIRTABLE_BASE_ID", 500);
+    }
+
+    let tables: AirtableTable[] | null = null;
+    try {
+      tables = await loadTables();
+    } catch (err) {
+      logError(err, { stage: "load_tables" });
+    }
 
     const submittedAt = new Date().toISOString();
     const notesParts = [];
     if (notes) notesParts.push(notes);
     if (statusHint) notesParts.push(`Start status: ${statusHint}`);
 
-    if (leadTable) {
-      const leadFields = leadTable.fields || [];
-      const payload: Record<string, unknown> = {};
+    if (tables) {
+      const leadTable = findTableByName(tables, LEAD_TABLE_CANDIDATES);
 
-      const nameField = resolveFieldName(leadFields, ["Name", "Full Name", "Contact Name"]);
-      const businessField = resolveFieldName(leadFields, [
+      if (leadTable) {
+        const leadFields = leadTable.fields || [];
+        const payload: Record<string, unknown> = {};
+
+        const nameField = resolveFieldName(leadFields, ["Name", "Full Name", "Contact Name"]);
+        const businessField = resolveFieldName(leadFields, [
+          "Business Name",
+          "Company Name",
+          "Company",
+          "Business",
+        ]);
+        const phoneField = resolveFieldName(leadFields, ["Phone", "Phone Number", "Primary Phone"]);
+        const emailField = resolveFieldName(leadFields, ["Email", "Email Address"]);
+        const tradeField = resolveFieldName(leadFields, ["Trade", "Service", "Service Type"]);
+        const websiteField = resolveFieldName(leadFields, [
+          "Company Website",
+          "Website",
+          "Web Site",
+          "URL",
+        ]);
+        const notesField = resolveFieldName(leadFields, ["Notes", "Lead Notes", "Details"]);
+        const sourceField = resolveFieldName(leadFields, ["Source", "Lead Source"]);
+        const submittedField = resolveFieldName(leadFields, [
+          "Submitted At",
+          "Submitted",
+          "Received At",
+          "Created At",
+        ]);
+        const statusField = resolveFieldName(leadFields, ["Status", "Lead Status"]);
+
+        if (nameField) payload[nameField] = name;
+        if (businessField) payload[businessField] = businessName;
+        if (phoneField) payload[phoneField] = phone;
+        if (emailField) payload[emailField] = email;
+        if (tradeField) payload[tradeField] = trade;
+        if (websiteField && normalizedWebsite) payload[websiteField] = normalizedWebsite;
+        if (notesField && notesParts.length) payload[notesField] = notesParts.join("\n\n");
+        if (sourceField) payload[sourceField] = "website";
+        if (submittedField) payload[submittedField] = submittedAt;
+        if (statusField) payload[statusField] = "New";
+
+        const recordId = await createRecord(leadTable.id, payload);
+        return NextResponse.json({ ok: true, id: recordId || crypto.randomUUID() }, { status: 200 });
+      }
+
+      const fallbackTable = findTableByName(tables, [FALLBACK_TABLE_NAME]);
+      if (!fallbackTable) {
+        throw new LeadApiError(
+          "AIRTABLE_ERROR",
+          "Lead table not found and Businesses table is missing.",
+          502
+        );
+      }
+
+      const fallbackFields = fallbackTable.fields || [];
+      const fallbackPayload: Record<string, unknown> = {};
+      const fallbackBusinessField = resolveFieldName(fallbackFields, [
         "Business Name",
         "Company Name",
         "Company",
         "Business",
       ]);
-      const phoneField = resolveFieldName(leadFields, ["Phone", "Phone Number", "Primary Phone"]);
-      const emailField = resolveFieldName(leadFields, ["Email", "Email Address"]);
-      const tradeField = resolveFieldName(leadFields, ["Trade", "Service", "Service Type"]);
-      const websiteField = resolveFieldName(leadFields, [
-        "Company Website",
-        "Website",
-        "Web Site",
-        "URL",
+      const fallbackPhoneField = resolveFieldName(fallbackFields, [
+        "Primary Phone",
+        "Phone",
+        "Phone Number",
       ]);
-      const notesField = resolveFieldName(leadFields, ["Notes", "Lead Notes", "Details"]);
-      const sourceField = resolveFieldName(leadFields, ["Source", "Lead Source"]);
-      const submittedField = resolveFieldName(leadFields, [
-        "Submitted At",
-        "Submitted",
-        "Received At",
-        "Created At",
+      const fallbackTradeField = resolveFieldName(fallbackFields, ["Trade", "Service"]);
+      const fallbackNotesField = resolveFieldName(fallbackFields, ["Notes", "Lead Notes"]);
+      const fallbackLeadSourceField = resolveFieldName(fallbackFields, [
+        "Lead Source",
+        "Source",
       ]);
-      const statusField = resolveFieldName(leadFields, ["Status", "Lead Status"]);
 
-      if (nameField) payload[nameField] = name;
-      if (businessField) payload[businessField] = businessName;
-      if (phoneField) payload[phoneField] = phone;
-      if (emailField) payload[emailField] = email;
-      if (tradeField) payload[tradeField] = trade;
-      if (websiteField && website) payload[websiteField] = website;
-      if (notesField && notesParts.length) payload[notesField] = notesParts.join("\n\n");
-      if (sourceField) payload[sourceField] = "website";
-      if (submittedField) payload[submittedField] = submittedAt;
-      if (statusField) payload[statusField] = "New";
+      if (fallbackBusinessField) fallbackPayload[fallbackBusinessField] = businessName;
+      if (fallbackPhoneField) fallbackPayload[fallbackPhoneField] = phone;
+      if (fallbackTradeField) fallbackPayload[fallbackTradeField] = trade;
+      if (fallbackLeadSourceField) fallbackPayload[fallbackLeadSourceField] = "Website Trial";
 
-      await createRecord(leadTable.id, payload);
-      return NextResponse.json({ ok: true }, { status: 200 });
-    }
+      const fallbackNotes = {
+        name,
+        businessName,
+        phone,
+        email,
+        trade,
+        website: normalizedWebsite || "",
+        notes: notesParts.join("\n\n"),
+        submittedAt,
+      };
 
-    const fallbackTable = findTableByName(tables, [FALLBACK_TABLE_NAME]);
-    if (!fallbackTable) {
-      throw new Error("No lead table found and fallback Businesses table missing.");
-    }
+      if (fallbackNotesField) {
+        fallbackPayload[fallbackNotesField] = JSON.stringify(fallbackNotes, null, 2);
+      }
 
-    const fallbackField = resolveFieldName(fallbackTable.fields || [], [FALLBACK_FIELD_NAME]);
-    if (!fallbackField) {
-      throw new Error(
-        'Fallback field "Inbound Trial Lead JSON" missing on Businesses table.'
-      );
+      if (!Object.keys(fallbackPayload).length) {
+        throw new LeadApiError(
+          "AIRTABLE_ERROR",
+          "Businesses table has no writable lead fields configured.",
+          502
+        );
+      }
+
+      const recordId = await createRecord(fallbackTable.id, fallbackPayload);
+      return NextResponse.json({ ok: true, id: recordId || crypto.randomUUID() }, { status: 200 });
     }
 
     const fallbackPayload = {
-      name,
-      businessName,
-      phone,
-      email,
-      trade,
-      website,
-      notes: notesParts.join("\n\n") || undefined,
-      source: "website",
-      submittedAt,
+      Name: name,
+      "Business Name": businessName,
+      Phone: phone,
+      Email: email,
+      Trade: trade,
+      "Company Website": normalizedWebsite || undefined,
+      Notes: notesParts.join("\n\n") || undefined,
+      Source: "website",
+      "Submitted At": submittedAt,
+      Status: "New",
     };
 
-    await createRecord(fallbackTable.id, {
-      [fallbackField]: JSON.stringify(fallbackPayload, null, 2),
-    });
-
-    return NextResponse.json({ ok: true }, { status: 200 });
+    const recordId = await createRecord(AIRTABLE_TABLE_LEADS, fallbackPayload);
+    return NextResponse.json({ ok: true, id: recordId || crypto.randomUUID() }, { status: 200 });
   } catch (err) {
+    logError(err, { stage: "lead_post" });
+
+    if (err instanceof LeadApiError) {
+      return NextResponse.json(
+        { ok: false, error: err.message, code: err.code },
+        { status: err.status }
+      );
+    }
+
     return NextResponse.json(
-      { ok: false, error: err instanceof Error ? err.message : "Request failed" },
+      { ok: false, error: "Lead submission failed.", code: "AIRTABLE_ERROR" },
       { status: 500 }
     );
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ ok: true }, { status: 200 });
+  return NextResponse.json(
+    {
+      ok: true,
+      env: {
+        hasToken: Boolean(AIRTABLE_ACCESS_TOKEN),
+        hasBaseId: Boolean(AIRTABLE_BASE_ID),
+      },
+    },
+    { status: 200 }
+  );
 }
