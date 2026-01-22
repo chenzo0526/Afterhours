@@ -59,7 +59,7 @@ export default function ThankYouPage() {
                 href="/how-it-works"
                 className="inline-flex flex-1 items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400"
               >
-                See how it works
+                Open Setup Kit
               </a>
               <a
                 href="/start"

@@ -57,7 +57,7 @@ export default function GetStarted() {
           <ul>
             <li><Link href="/how-it-works">How It Works</Link></li>
             <li><Link href="/pricing">Pricing</Link></li>
-            <li><Link href="/start#start-trial" className="btn btn-primary">Start Live Trial</Link></li>
+            <li><Link href="/start#start-trial" className="btn btn-primary">Start trial when ready</Link></li>
           </ul>
         </div>
       </nav>
@@ -85,9 +85,9 @@ export default function GetStarted() {
                 <ol style={{ paddingLeft: '24px', color: '#666666' }}>
                   <li style={{ marginBottom: '12px' }}>You fill out the form below</li>
                   <li style={{ marginBottom: '12px' }}>We may reach out by phone to schedule a brief call</li>
-                  <li style={{ marginBottom: '12px' }}>We confirm setup requirements and schedule a required test call</li>
+                  <li style={{ marginBottom: '12px' }}>We confirm setup requirements and schedule a quick setup check to confirm forwarding works</li>
                   <li style={{ marginBottom: '12px' }}>We send a trial summary based on the conversation</li>
-                  <li style={{ marginBottom: '12px' }}>Go-live happens only after the test call is approved</li>
+                  <li style={{ marginBottom: '12px' }}>Live trial begins</li>
                 </ol>
               </div>
 

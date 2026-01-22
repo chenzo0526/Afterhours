@@ -5,9 +5,10 @@ import { useState } from "react";
 
 type StartTrialFormProps = {
   status: string;
+  source: string;
 };
 
-export default function StartTrialForm({ status }: StartTrialFormProps) {
+export default function StartTrialForm({ status, source }: StartTrialFormProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,28 +81,28 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
           Name
           <input
             name="name"
-            required
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
             placeholder="Jamie Rivera"
           />
         </label>
         <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          Business name
+          Business name (optional)
           <input
             name="businessName"
-            required
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
             placeholder="Northside Plumbing"
           />
         </label>
         <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          Phone
+          Phone (optional)
           <input
             name="phone"
-            required
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
             placeholder="Your phone number"
           />
+          <span className="mt-2 block text-[11px] font-normal normal-case tracking-normal text-muted-foreground">
+            Used only for setup and quick setup check coordination.
+          </span>
         </label>
         <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
           Email
@@ -112,26 +113,18 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
             placeholder="you@company.com"
           />
+          <span className="mt-2 block text-[11px] font-normal normal-case tracking-normal text-muted-foreground">
+            Used only for setup and quick setup check coordination.
+          </span>
         </label>
         <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground sm:col-span-2">
-          Trade
-          <select
-            name="trade"
-            required
+          Role (optional)
+          <input
+            name="role"
+            type="text"
             className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Select trade
-            </option>
-            {["HVAC", "Plumbing", "Electrical", "Restoration", "Locksmith", "Other"].map(
-              (trade) => (
-                <option key={trade} value={trade}>
-                  {trade}
-                </option>
-              )
-            )}
-          </select>
+            placeholder="Owner, Operations, Dispatcher"
+          />
         </label>
         <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground sm:col-span-2">
           Company website (optional)
@@ -151,17 +144,9 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
             Helps us tailor the call flow to your services and service area.
           </span>
         </label>
-        <label className="text-xs uppercase tracking-[0.2em] text-muted-foreground sm:col-span-2">
-          Notes (optional)
-          <textarea
-            name="notes"
-            rows={4}
-            className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500/40"
-            placeholder="Anything we should know about your overnight flow"
-          />
-        </label>
       </div>
       <input type="hidden" name="status" value={status} />
+      <input type="hidden" name="source" value={source} />
       <button
         type="submit"
         disabled={isSubmitting}
@@ -174,21 +159,19 @@ export default function StartTrialForm({ status }: StartTrialFormProps) {
             Submitting...
           </span>
         ) : (
-          "Start Live Trial"
+          "Start trial when ready"
         )}
       </button>
       {error ? (
         <p className="mt-3 text-center text-xs text-red-400" role="alert">
           {error}
         </p>
-      ) : (
-        <p className="mt-3 text-center text-xs text-muted-foreground">
-          No setup fee. No auto-billing. Cancel anytime.
-        </p>
-      )}
-      <p className="mt-2 text-center text-xs text-muted-foreground">
-        We confirm your setup details before the required test call and go-live.
-      </p>
+      ) : null}
+      <div className="mt-4 rounded-xl border border-border bg-muted/40 p-3 text-center text-xs text-muted-foreground">
+        <p>No auto-billing.</p>
+        <p>Nothing goes live until the quick setup check is complete.</p>
+        <p>Stop after the quick setup check if it’s not a fit.</p>
+      </div>
     </form>
   );
 }

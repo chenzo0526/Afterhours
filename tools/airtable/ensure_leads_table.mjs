@@ -4,7 +4,6 @@ import process from "node:process";
 const { AIRTABLE_ACCESS_TOKEN, AIRTABLE_BASE_ID } = process.env;
 const AIRTABLE_TABLE_LEADS = process.env.AIRTABLE_TABLE_LEADS || "Leads";
 const AIRTABLE_META_BASE = "https://api.airtable.com/v0/meta";
-const LEAD_TABLE_CANDIDATES = [AIRTABLE_TABLE_LEADS, "Leads", "Trial Leads", "Live Trial Leads"];
 
 function requireEnv() {
   if (!AIRTABLE_ACCESS_TOKEN || !AIRTABLE_BASE_ID) {
@@ -13,12 +12,6 @@ function requireEnv() {
     );
     process.exit(1);
   }
-}
-
-function normalize(value) {
-  return String(value || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
 }
 
 async function fetchJson(url, options = {}) {
@@ -62,21 +55,31 @@ async function loadSchema() {
 }
 
 function findLeadTable(tables) {
-  const candidateSet = new Set(LEAD_TABLE_CANDIDATES.map(normalize));
-  return tables.find((table) => candidateSet.has(normalize(table.name)));
+  return tables.find((table) => table.name === AIRTABLE_TABLE_LEADS);
 }
 
 function buildLeadFieldSchema() {
   return [
     { name: "Name", type: "singleLineText" },
-    { name: "Business Name", type: "singleLineText" },
-    { name: "Phone", type: "phoneNumber" },
     { name: "Email", type: "email" },
-    { name: "Trade", type: "singleLineText" },
+    { name: "Phone", type: "singleLineText" },
+    { name: "Company", type: "singleLineText" },
+    { name: "Role", type: "singleLineText" },
     { name: "Website", type: "url" },
-    { name: "Notes", type: "multilineText" },
     { name: "Source", type: "singleLineText" },
-    { name: "Created At", type: "dateTime" },
+    {
+      name: "Status",
+      type: "singleSelect",
+      options: {
+        choices: [
+          { name: "New" },
+          { name: "Contacted" },
+          { name: "Qualified" },
+          { name: "Disqualified" },
+        ],
+      },
+    },
+    { name: "Created At", type: "createdTime" },
   ];
 }
 
@@ -108,9 +111,9 @@ async function createField(tableId, field) {
 }
 
 async function ensureLeadFields(leadTable) {
-  const existing = new Set((leadTable.fields || []).map((field) => normalize(field.name)));
+  const existing = new Set((leadTable.fields || []).map((field) => field.name));
   const missing = buildLeadFieldSchema().filter(
-    (field) => !existing.has(normalize(field.name))
+    (field) => !existing.has(field.name)
   );
 
   if (!missing.length) {
@@ -146,7 +149,7 @@ async function main() {
   } catch (err) {
     console.error("Lead table not found and could not be created.");
     console.error(
-      `Create a table named "${AIRTABLE_TABLE_LEADS}" with fields: Name, Business Name, Phone, Email, Trade, Website, Notes, Source, Created At.`
+      `Create a table named "${AIRTABLE_TABLE_LEADS}" with fields: Name, Email, Phone, Company, Role, Website, Source, Status, Created At.`
     );
     console.error(err?.message || err);
   }

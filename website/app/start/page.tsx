@@ -22,11 +22,20 @@ const statusOptions = new Set<StatusKey>(['miss', 'some', 'covered']);
 export default function StartPage({
   searchParams,
 }: {
-  searchParams?: { status?: string };
+  searchParams?: { status?: string; source?: string };
 }) {
   const rawStatus = searchParams?.status?.toLowerCase() ?? '';
   const status = statusOptions.has(rawStatus as StatusKey) ? (rawStatus as StatusKey) : 'miss';
   const subheadline = statusCopy[status];
+  const rawSource = typeof searchParams?.source === 'string' ? searchParams.source : '';
+  const source = rawSource.trim() || 'website';
+  const isInboundDiagnostic = source === 'inbound-diagnostic';
+  const heroHeadline = isInboundDiagnostic
+    ? 'See how inbound calls are handled when no one can answer'
+    : "Stop losing emergency calls while you're asleep.";
+  const heroSubheadline = isInboundDiagnostic
+    ? 'This live walkthrough shows how calls are answered, qualified, and summarized before anything is escalated.'
+    : subheadline;
 
   return (
     <div className="bg-background text-foreground">
@@ -39,9 +48,9 @@ export default function StartPage({
                 Live Trial
               </div>
               <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">
-                Stop losing emergency calls while you're asleep.
+                {heroHeadline}
               </h1>
-              <p className="mt-4 text-lg text-muted-foreground sm:text-xl">{subheadline}</p>
+              <p className="mt-4 text-lg text-muted-foreground sm:text-xl">{heroSubheadline}</p>
               <ul className="mt-6 space-y-3 text-sm text-muted-foreground sm:text-base">
                 {[
                   'Capture high-value emergencies instead of sending callers to voicemail.',
@@ -54,13 +63,18 @@ export default function StartPage({
                   </li>
                 ))}
               </ul>
-              <div className="mt-8 flex flex-col items-start gap-3">
+              <div className="mt-8 flex flex-col items-start gap-6">
                 <StartTrialButton className="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400">
-                  Start Live Trial
+                  See how calls are handled
                 </StartTrialButton>
-                <span className="text-xs text-muted-foreground">
-                  No setup fee. No auto-billing. Cancel anytime.
-                </span>
+                <div className="w-full max-w-md rounded-2xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+                  <p className="text-xs uppercase tracking-[0.2em] text-sky-400">What happens next</p>
+                  <ol className="mt-3 space-y-2 text-sm">
+                    <li>1. We confirm your setup details</li>
+                    <li>2. We run a quick setup check to confirm forwarding works</li>
+                    <li>3. Live trial begins</li>
+                  </ol>
+                </div>
               </div>
               <div className="mt-6 w-full rounded-2xl border border-border bg-card/70 p-5">
                 <p className="text-sm font-semibold text-foreground">What you get</p>
@@ -260,7 +274,7 @@ export default function StartPage({
                 <div>
                   <p className="text-sm font-semibold">Clear handoff</p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    We walk you through forwarding and run a required test call before go-live.
+                    We walk you through forwarding and run a quick setup check to confirm forwarding works before go-live.
                   </p>
                 </div>
               </div>
@@ -317,7 +331,7 @@ export default function StartPage({
                 Start once forwarding is ready
               </h2>
               <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-                We set up forwarding and run a quick test call.
+                We set up forwarding and run a quick setup check to confirm forwarding works.
               </p>
               <div className="mt-6 rounded-2xl border border-border bg-card/70 p-5">
                 <p className="text-sm font-semibold text-foreground">Setup checklist</p>
@@ -335,11 +349,11 @@ export default function StartPage({
                   ))}
                 </ul>
                 <p className="mt-4 text-xs text-muted-foreground">
-                  Go-live happens after the test call is approved.
+                  Live trial begins.
                 </p>
               </div>
             </div>
-            <StartTrialForm status={status} />
+            <StartTrialForm status={status} source={source} />
           </div>
         </div>
       </section>
@@ -398,7 +412,7 @@ export default function StartPage({
             See how late-night calls get handled
           </h2>
           <StartTrialButton className="mt-6 inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-sky-600 transition hover:bg-white/90">
-            Start Live Trial
+            Run a live call on your number
           </StartTrialButton>
         </div>
       </section>

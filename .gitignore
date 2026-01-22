@@ -45,3 +45,5 @@ example_leads.csv
 
 # Secrets
 .env*
+.vercel
+.env*.local
