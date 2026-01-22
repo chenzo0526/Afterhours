@@ -2,7 +2,25 @@
 
 import { motion } from 'framer-motion'
 
-export default function CallFlowDemo() {
+const defaultSteps = [
+  { speaker: 'Caller', text: 'Hi, I’ve got water leaking under my sink.' },
+  { speaker: 'Afterhours', text: 'Is the leak active right now?' },
+  { speaker: 'Caller', text: 'Yes, it’s still dripping.' },
+  {
+    speaker: 'Afterhours',
+    text: 'Thanks. This is urgent — notifying your tech now.',
+  },
+]
+
+type CallStep = { speaker: string; text: string; meta?: { urgency?: string } }
+
+type CallFlowDemoProps = {
+  steps?: CallStep[]
+}
+
+export default function CallFlowDemo({ steps }: CallFlowDemoProps) {
+  const items = steps != null && steps.length > 0 ? steps : defaultSteps
+
   return (
     <section className="relative mx-auto max-w-5xl px-6 py-24">
       <div className="mb-12">
@@ -15,15 +33,7 @@ export default function CallFlowDemo() {
       </div>
 
       <div className="space-y-6">
-        {[
-          { speaker: 'Caller', text: 'Hi, I’ve got water leaking under my sink.' },
-          { speaker: 'Afterhours', text: 'Is the leak active right now?' },
-          { speaker: 'Caller', text: 'Yes, it’s still dripping.' },
-          {
-            speaker: 'Afterhours',
-            text: 'Thanks. This is urgent — notifying your tech now.',
-          },
-        ].map((line, i) => (
+        {items.map((line, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 12 }}
