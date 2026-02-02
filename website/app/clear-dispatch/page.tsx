@@ -8,7 +8,7 @@ export default function ClearDispatchPage() {
       <Hero
         title="Teams work better when they know what’s actually happening."
         ctaLabel="See the process"
-        ctaHref="/start?source=clear-dispatch"
+        ctaHref="/?source=clear-dispatch"
       />
 
       <Section tone="muted">

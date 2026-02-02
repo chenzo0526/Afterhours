@@ -18,7 +18,7 @@ export default function SignalWave({ intensity, className, split = false }: Sign
       <svg
         viewBox="0 0 640 120"
         role="img"
-        aria-label="Signal waveform"
+        aria-label="Live intake system signal waveform showing active emergency call handling for service trades"
         className="h-12 w-full"
       >
         {split ? (

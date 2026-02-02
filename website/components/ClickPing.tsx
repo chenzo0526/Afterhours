@@ -8,7 +8,7 @@ export default function ClickPing({ status }: { status: string }) {
     fetch("/api/click", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status, page: "/start" }),
+      body: JSON.stringify({ status, page: "/" }),
     }).catch(() => {});
   }, [status]);
 

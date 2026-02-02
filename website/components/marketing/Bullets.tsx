@@ -13,7 +13,7 @@ export default function Bullets({ items, columns = 1 }: BulletsProps) {
     <ul className={`mt-6 grid gap-3 text-sm text-muted-foreground ${columnClass}`}>
       {items.map((item) => (
         <li key={item} className="flex items-start gap-3">
-          <Check className="mt-0.5 h-4 w-4 text-sky-400" />
+          <Check className="mt-0.5 h-4 w-4 text-primary" />
           <span>{item}</span>
         </li>
       ))}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CheckCircle2, PauseCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function GhostRunCompletePage() {
   const price = process.env.NEXT_PUBLIC_MONTHLY_PRICE || '$249/month';
@@ -11,7 +12,7 @@ export default function GhostRunCompletePage() {
   return (
     <div className="bg-background text-foreground">
       <section className="container mx-auto px-6 py-20 sm:py-24">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card/80 p-8 shadow-xl shadow-black/20 sm:p-12">
+        <div className="mx-auto max-w-2xl rounded-xl border border-border bg-card/80 p-8 shadow-xl shadow-black/20 sm:p-12">
           <h1 className="text-3xl font-semibold sm:text-4xl">
             Your live trial is complete. Decide whether to continue.
           </h1>
@@ -24,36 +25,38 @@ export default function GhostRunCompletePage() {
             <div className="rounded-xl border border-border bg-muted/30 p-5">
               <div className="flex items-center justify-between text-sm">
                 <span className="font-semibold">Keep Afterhours running (monthly)</span>
-                <span className="text-sky-400">{price}</span>
+                <span className="text-primary">{price}</span>
               </div>
               <label className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
                 <input
                   type="checkbox"
                   checked={confirmed}
                   onChange={(event) => setConfirmed(event.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-border bg-background text-sky-500 focus:ring-sky-500/40"
+                  className="mt-0.5 h-4 w-4 rounded border-border bg-background text-primary focus:ring-primary/40"
                 />
                 I confirm the monthly price shown above and want to continue.
               </label>
-              <button
+              <Button
                 type="button"
+                variant="primary"
                 disabled={!confirmed}
                 onClick={() => setAction('keep')}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-4 w-full gap-2"
               >
                 <CheckCircle2 className="h-4 w-4" />
                 Confirm monthly plan
-              </button>
+              </Button>
             </div>
 
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={() => setAction('stop')}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-sky-400 hover:text-sky-300"
+              className="w-full gap-2"
             >
               <PauseCircle className="h-4 w-4" />
               Stop here (no charge)
-            </button>
+            </Button>
           </div>
 
           {action && (

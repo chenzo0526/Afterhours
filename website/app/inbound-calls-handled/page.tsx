@@ -7,6 +7,7 @@ import SignalWave from "@/components/visual/SignalWave";
 import SummaryCard from "@/components/visual/SummaryCard";
 import MotionContainer from "@/components/visual/MotionContainer";
 import CallFlowDemo from "@/components/CallFlowDemo";
+import { Button } from "@/components/ui/button";
 
 const callFlowSteps = [
   {
@@ -14,27 +15,24 @@ const callFlowSteps = [
     text: "Hey, sorry — our basement is flooding. The water heater just dumped everywhere.",
   },
   {
-    speaker: "system",
-    text: "Emergency: Water heater leak with active flooding reported.",
-    meta: { urgency: "high" },
+    speaker: "afterhours",
+    text: "This is [Company] — we handle your calls when the office is closed. I understand you have active flooding from the water heater. Let me get your details and notify the on-call technician right away.",
   },
   {
     speaker: "caller",
     text: "I tried the valve but it won’t move. We’ve got towels down but it’s still spreading.",
   },
   {
-    speaker: "system",
-    text: "Caller attempted shutoff; leak continues. Immediate response required.",
-    meta: { urgency: "high" },
+    speaker: "afterhours",
+    text: "I understand. What's the service address and best number to reach you?",
   },
   {
     speaker: "caller",
     text: "We’re at 1120 Ridge Ave, back unit. Call my cell, 555-0142.",
   },
   {
-    speaker: "system",
-    text: "Location captured. Notify on-call tech and dispatch for after-hours response.",
-    meta: { urgency: "high" },
+    speaker: "afterhours",
+    text: "I'll notify the on-call technician now. They'll call you back when they can. I can't provide an arrival time, but they'll be in touch shortly. If anything changes or gets worse, please call back immediately.",
   },
 ] as const;
 
@@ -51,8 +49,8 @@ export default function InboundCallsHandledPage() {
             title="Inbound calls are where most service businesses quietly lose work."
             subtitle="Not because demand isn't there. Because when calls come in and no one is immediately available, the handling breaks down."
             ctaLabel="See how calls are handled"
-            ctaHref="/start?source=inbound-diagnostic"
-            ctaNote="Answer a few quick questions. No setup required."
+            ctaHref="/?source=inbound-diagnostic"
+            ctaNote="Answer a few questions."
           />
         </MotionContainer>
       </ScrollSection>
@@ -197,22 +195,14 @@ export default function InboundCallsHandledPage() {
       <ScrollSection className="py-0" withContainer={false}>
         <MotionContainer fadeInOnScroll subtleTranslateY>
           <Section tone="default" title="Get started" align="center">
-            <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-              If you want to see how this works in practice, start here.
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/start?source=inbound-calls-handled"
-                className="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400"
-              >
-              Run a live call on your number
+            <div className="mt-8">
+              <Link href="/?source=inbound-calls-handled">
+                <Button variant="primary">
+                  Run a live call on your number
+                </Button>
               </Link>
             </div>
             <p className="mt-6 text-sm text-muted-foreground">Short setup. No obligation.</p>
-            <p className="mt-6 text-sm text-muted-foreground">
-              No long-term contracts. No disruption to your existing process. Just a cleaner way to
-              handle inbound calls.
-            </p>
           </Section>
         </MotionContainer>
       </ScrollSection>

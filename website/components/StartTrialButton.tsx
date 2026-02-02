@@ -2,34 +2,42 @@
 
 import { useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { HulyButton } from '@/components/ui/huly-button';
+import { cn } from '@/lib/utils';
 
-type StartTrialButtonProps = {
-  className?: string;
+type StartTrialButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
 };
 
-export default function StartTrialButton({ className, children }: StartTrialButtonProps) {
+export default function StartTrialButton({ className, children, ...props }: StartTrialButtonProps) {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleClick = useCallback(() => {
-    if (pathname === '/start') {
+    if (pathname === '/') {
       const target = document.getElementById('start-trial');
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         if (window.location.hash !== '#start-trial') {
-          window.history.replaceState(null, '', '#start-trial');
+          window.history.replaceState(null, '', '/#start-trial');
         }
         return;
       }
     }
 
-    router.push('/start#start-trial');
+    router.push('/#start-trial');
   }, [pathname, router]);
 
   return (
-    <button type="button" onClick={handleClick} className={className}>
+    <HulyButton
+      type="button"
+      variant="primary"
+      onClick={handleClick}
+      className={cn(className)}
+      {...props}
+    >
       {children}
-    </button>
+    </HulyButton>
   );
 }

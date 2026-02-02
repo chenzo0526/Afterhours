@@ -6,45 +6,45 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Afterhours</h3>
+            <h2 className="font-semibold text-foreground mb-4">Afterhours</h2>
             <p className="text-sm text-muted-foreground">
-              After-hours call intake that keeps your team informed.
+              Off-hours call intake that keeps your team informed.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Product</h4>
+            <h3 className="font-semibold text-foreground mb-4">Product</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/how-it-works" className="text-muted-foreground hover:text-foreground">
+                <Link href="/how-it-works" className="text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
+                <Link href="/pricing" className="text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded">
                   Pricing
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+            <h3 className="font-semibold text-foreground mb-4">Legal</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
+                <Link href="/privacy" className="text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-muted-foreground hover:text-foreground">
+                <Link href="/terms" className="text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded">
                   Terms of Service
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Contact</h4>
+            <h3 className="font-semibold text-foreground mb-4">Contact</h3>
             <p className="text-sm text-muted-foreground">
-              <a href="mailto:support@afterhours.com" className="hover:text-foreground">
+              <a href="mailto:support@afterhours.com" className="hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded">
                 support@afterhours.com
               </a>
             </p>

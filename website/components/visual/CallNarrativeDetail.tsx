@@ -6,9 +6,9 @@ type CallNarrativeDetailProps = {
 };
 
 const toneStyles: Record<NonNullable<CallNarrativeDetailProps["tone"]>, string> = {
-  default: "border-white/10 bg-white/5 text-white/85",
-  muted: "border-white/5 bg-white/3 text-white/50",
-  urgent: "border-red-400/30 bg-red-500/10 text-red-200",
+  default: "border-foreground/10 bg-foreground/5 text-foreground/85",
+  muted: "border-foreground/5 bg-foreground/3 text-muted-foreground",
+  urgent: "border-destructive/30 bg-destructive/10 text-destructive-foreground",
 };
 
 export default function CallNarrativeDetail({
@@ -23,7 +23,7 @@ export default function CallNarrativeDetail({
         className ?? ""
       }`}
     >
-      <div className="text-[10px] text-white/40">{label}</div>
+      <div className="text-[10px] text-muted-foreground/60">{label}</div>
       <div className="mt-1 text-xs font-semibold normal-case tracking-normal">{value}</div>
     </div>
   );

@@ -32,7 +32,7 @@ export default function Section({
         {(title || kicker) && (
           <div className={`motion-fade ${alignment}`}>
             {kicker ? (
-              <p className="text-xs uppercase tracking-[0.2em] text-sky-400">{kicker}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary">{kicker}</p>
             ) : null}
             {title ? (
               <h2 className="mt-3 text-2xl font-semibold leading-tight sm:text-3xl">{title}</h2>

@@ -4,58 +4,159 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* Deep Obsidian Base */
+    --background: 0 0% 1%; /* #020202 */
+    --foreground: 0 0% 98%;
+    --card: 240 10% 4.5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 4.5%;
+    --popover-foreground: 0 0% 98%;
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --secondary: 240 10% 8%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 10% 8%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 10% 8%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.9%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 10% 12%;
+    --input: 240 10% 12%;
+    --ring: 217.2 91.2% 59.8%;
+    --radius: 0.5rem;
   }
+}
+
+/* Lenis smooth scroll — official recommended CSS; prevents sticky jitter */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+html.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+html.lenis.lenis-stopped {
+  overflow: hidden;
+}
+html.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  
+  html,
   body {
-    @apply bg-background text-foreground antialiased leading-relaxed;
+    /* Mesh Gradient Background with Noise */
+    background-color: rgb(3, 7, 18); /* neutral-950 */
+    background-image: 
+      /* Noise texture to remove color banding */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"),
+      /* Top-down spotlight effect */
+      radial-gradient(circle at 50% -20%, rgba(120, 119, 198, 0.1), rgba(255, 255, 255, 0));
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%;
+  }
+  
+  body {
+    @apply text-neutral-400 leading-relaxed antialiased;
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  /* Headings: Pure white for contrast (Developer Tool look) */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white;
+  }
+  
+  /* Selection styling - Blue tint */
+  ::selection {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: white;
+  }
+  
+  ::-moz-selection {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: white;
+  }
+  
+  /* Custom Scrollbar - Thin, Huly-style */
+  ::-webkit-scrollbar {
+    width: 6px; /* w-1.5 = 0.375rem = 6px */
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgb(38, 38, 38); /* neutral-800 */
+    border-radius: 9999px; /* rounded-full */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(64, 64, 64); /* neutral-700 */
+  }
+  
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(38, 38, 38) transparent; /* neutral-800 thumb, transparent track */
+  }
+  
+  /* Typography: Headings with Laser precision */
+  h1, h2, h3 {
+    letter-spacing: -0.02em; /* tracking-tight */
+  }
+  
+  h4, h5, h6 {
+    @apply tracking-tighter;
+  }
+  
+  /* H1 specific gradient */
+  h1 {
+    @apply font-bold;
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0.5));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* H2 headers */
+  h2 {
+    @apply font-bold;
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0.6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* H3 headers */
+  h3 {
+    @apply font-bold;
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0.6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Apply Apple-smooth transitions globally */
+  *,
+  *::before,
+  *::after {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
@@ -70,7 +171,7 @@
   .motion-fade {
     opacity: 0;
     transform: translateY(8px);
-    animation: fade-slide 600ms ease-out forwards;
+    animation: fade-slide 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .motion-fade-delay-150 {
@@ -89,5 +190,45 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .motion-scroll-fade {
+      opacity: 1;
+      transform: translateY(0);
+      transition: none;
+    }
+  }
+
+  .motion-scroll-fade {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .motion-scroll-fade-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
 }

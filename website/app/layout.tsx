@@ -1,51 +1,36 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Providers from '@/components/Providers';
+import { createMetadata } from '@/metadata';
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://afterhourscoverage.com'),
-  title: 'Afterhours',
-  description:
-    'After-hours call intake for local service businesses. Capture details and notify your on-call contact.',
-  keywords: [
-    'after-hours call intake',
-    'plumbing after-hours calls',
-    'HVAC after-hours calls',
-    'electrical after-hours calls',
-    'local service business',
-    'call summaries',
-    'on-call notification',
-    'overflow call intake',
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#050505' },
+    { media: '(prefers-color-scheme: light)', color: '#050505' },
   ],
-  openGraph: {
-    title: 'Afterhours',
-    description:
-      'After-hours call intake for local service businesses. Capture details and notify your on-call contact.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Afterhours',
-    description:
-      'After-hours call intake for local service businesses. Capture details and notify your on-call contact.',
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
-      { url: '/favicon.ico' },
-    ],
-    shortcut: '/favicon.ico',
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
+
+export const metadata: Metadata = createMetadata({
+  title: 'Afterhours',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Afterhours',
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
+});
 
 export default function RootLayout({
   children,
@@ -53,11 +38,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+    <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+      <body className={`${GeistSans.className} min-h-screen flex flex-col overflow-visible`} suppressHydrationWarning>
+        <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+          >
+            Skip to main content
+          </a>
+          <Navbar />
+          <main id="main-content" className="flex-grow pt-[7rem]" tabIndex={-1}>
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

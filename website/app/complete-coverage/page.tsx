@@ -8,7 +8,7 @@ export default function CompleteCoveragePage() {
       <Hero
         title="You don’t need more visibility. You need better handling."
         ctaLabel="See what comes through"
-        ctaHref="/start?source=complete-coverage"
+        ctaHref="/?source=complete-coverage"
       />
 
       <Section tone="muted">
